@@ -11,7 +11,7 @@ import io.ktor.http.contentType
 object LoginRepository {
     suspend fun fetchUser(token:String): LoginResponse {
 
-        val url = "http://ec2-3-36-76-237.ap-northeast-2.compute.amazonaws.com:8080/api/phone/match-all"
+        val url = ""
 
         val httpClient = HttpClient {
             install(JsonFeature) {
