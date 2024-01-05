@@ -1,50 +1,34 @@
 package com.example.madcamp2_fe
 
-import androidx.lifecycle.ViewModelProvider
+
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.activityViewModels
-import com.example.madcamp2_fe.databinding.FragmentLoginBinding
+import androidx.activity.viewModels
+import com.example.madcamp2_fe.databinding.ActivityMainBinding
 import com.kakao.sdk.auth.model.OAuthToken
+import com.kakao.sdk.common.KakaoSdk
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.Constants
 import com.kakao.sdk.user.UserApiClient
 
-class LoginFragment : Fragment() {
 
-    private var _binding : FragmentLoginBinding?  = null
-    private val binding get() = _binding!!
-    private val userViewModel : UserViewModel by activityViewModels()
-    companion object {
-        fun newInstance() = LoginFragment()
-    }
+class MainActivityLogin : AppCompatActivity() {
+    private lateinit var binding : ActivityMainBinding
+    private val loginViewModel: UserViewModel by viewModels()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        KakaoSdk.init(this,"710f05baaf03d564cb1cb51f782e5c03")
+
+//        로그인 안된 경우에는 login 시작
+        kakaoLoginRequest()
 
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentLoginBinding.inflate(inflater, container, false)
-        return binding.root
 
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        binding.connectKakao.setOnClickListener {
-            kakaoTokenCheck()
-            kakaoLoginRequest()
-        }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
     private fun kakaoTokenCheck(){
         UserApiClient.instance.accessTokenInfo{ tokenInfo, error ->
@@ -57,7 +41,6 @@ class LoginFragment : Fragment() {
 
         }
     }
-
     private fun kakaoLoginRequest(){
         val userId = binding.idBox.text
         val userPassword = binding.passwordBox.text
@@ -81,8 +64,8 @@ class LoginFragment : Fragment() {
         }
 
 // 카카오톡이 설치되어 있으면 카카오톡으로 로그인, 아니면 카카오계정으로 로그인
-        if (UserApiClient.instance.isKakaoTalkLoginAvailable(requireContext())) {
-            UserApiClient.instance.loginWithKakaoTalk(requireContext()) { token, error ->
+        if (UserApiClient.instance.isKakaoTalkLoginAvailable(this)) {
+            UserApiClient.instance.loginWithKakaoTalk(this) { token, error ->
                 if (error != null) {
                     Log.e(Constants.TAG, "카카오톡으로 로그인 실패", error)
 
@@ -94,19 +77,18 @@ class LoginFragment : Fragment() {
 
                     // 카카오톡에 연결된 카카오계정이 없는 경우, 카카오계정으로 로그인 시도
                     UserApiClient.instance.loginWithKakaoAccount(
-                        requireContext(),
+                        this,
                         callback = callback
                     )
                 } else if (token != null) {
                     Log.i(Constants.TAG, "카카오톡으로 로그인 성공 ${token.accessToken}")
-//                    kakaoLogin = true
+//
                 }
             }
         } else {
-            UserApiClient.instance.loginWithKakaoAccount(requireContext(), callback = callback)
+            UserApiClient.instance.loginWithKakaoAccount(this, callback = callback)
 //            kakaoLogin = true
         }
     }
-
 
 }
