@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">madcamp2_FE</string>
+    <string name="userRegistration">회원가입</string>
+    <string name="idHint">아이디를 입력하세요</string>
+    <string name="passwordHint">패스워드를 입력하세요</string>
+    <string name="connectKakao">카카오톡 연동하기</string>
+</resources>
