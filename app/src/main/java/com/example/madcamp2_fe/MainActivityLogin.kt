@@ -8,12 +8,9 @@ import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.example.madcamp2_fe.login.LoginRequest
 import com.example.madcamp2_fe.databinding.ActivityMainBinding
 import com.example.madcamp2_fe.login.LoginResponse
-import com.example.madcamp2_fe.login.LoginViewModel
-import com.example.madcamp2_fe.login.UserClientManager
 import com.example.madcamp2_fe.utils.RESPONSE_STATE
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.KakaoSdk
@@ -44,7 +41,8 @@ class MainActivityLogin : AppCompatActivity() {
                 intent.putExtra("nickname", loginInfo.value!!.nickname)
                 intent.putExtra("accessToken", loginInfo.value!!.accessToken)
                 intent.putExtra("isRegistered", loginInfo.value!!.isRegistered)
-                intent.putExtra("isRegistered", loginInfo.value!!.profileImg)
+                intent.putExtra("profileImg", loginInfo.value!!.profileImg)
+                Log.d("observe", "move to walkActivity")
                 startActivity(intent)
                 finish()
             }

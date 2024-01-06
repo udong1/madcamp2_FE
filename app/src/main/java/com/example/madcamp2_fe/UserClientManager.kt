@@ -1,6 +1,8 @@
-package com.example.madcamp2_fe.login
+package com.example.madcamp2_fe
 
 import android.util.Log
+import com.example.madcamp2_fe.login.LoginRequest
+import com.example.madcamp2_fe.login.LoginResponse
 import com.example.madcamp2_fe.utils.API
 import com.example.madcamp2_fe.utils.RESPONSE_STATE
 import com.kakao.sdk.user.Constants.TAG
@@ -11,7 +13,8 @@ class UserClientManager {
     companion object{
         val instance = UserClientManager()
     }
-    private val userLoginInterface : UserInterface? = UserClient.getClient(API.BASE_URL)?.create(UserInterface::class.java)
+    private val userLoginInterface : UserInterface? = UserClient.getClient(API.BASE_URL)
+        ?.create(UserInterface::class.java)
 
     fun login(loginRequest : LoginRequest, completion:(RESPONSE_STATE, LoginResponse)-> Unit){
         Log.d("login1", "$userLoginInterface")

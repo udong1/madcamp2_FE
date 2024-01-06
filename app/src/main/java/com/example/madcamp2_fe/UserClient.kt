@@ -1,4 +1,4 @@
-package com.example.madcamp2_fe.login
+package com.example.madcamp2_fe
 
 import android.util.Log
 import com.kakao.sdk.user.Constants.TAG
