@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<font-family
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+<!--    font 폴더 만들어서 폰트 파일 넣기-->
+<!--    font resource 파일 생성-->
+<!--    font_style 파일 생성-->
+<!--    styles.xml에 코드 추가-->
+<!--    https://stickode.tistory.com/51-->
+
+
+    <font
+        android:font="@font/sejong_hospital_light"
+        android:fontStyle="normal"
+        android:fontWeight="500" />
+    <font
+        android:font="@font/sejong_hospital_bold"
+        android:fontStyle="normal"
+        android:fontWeight="700" />
+</font-family>
