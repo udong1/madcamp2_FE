@@ -1,19 +1,17 @@
-package com.example.madcamp2_fe.MyWalks
+package com.example.madcamp2_fe.home
 
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import com.example.madcamp2_fe.UserViewModel
-import com.example.madcamp2_fe.databinding.FragmentFriendsWalksBinding
+import com.example.madcamp2_fe.databinding.FragmentHomeBinding
 
 
-class MyWalksFragment : Fragment() {
+class HomeFragment : Fragment() {
 
-    private var _binding : FragmentFriendsWalksBinding? = null
-    private val userViewModel : UserViewModel by activityViewModels()
+    private var _binding : FragmentHomeBinding? = null
     private val binding get() = _binding!!
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,17 +23,24 @@ class MyWalksFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        _binding = FragmentFriendsWalksBinding.inflate(inflater, container, false)
+        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+//        binding.homeName.text=userViewModel.getResponse()?.userName
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
     companion object {
         fun newInstance(){
 
         }
-    }
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+
     }
 }

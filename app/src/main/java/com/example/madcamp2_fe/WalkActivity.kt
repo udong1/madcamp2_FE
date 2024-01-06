@@ -3,9 +3,9 @@ package com.example.madcamp2_fe
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import com.example.madcamp2_fe.FriendsWalks.FriendsWalksFragment
-import com.example.madcamp2_fe.Home.HomeFragment
-import com.example.madcamp2_fe.MyWalks.MyWalksFragment
+import com.example.madcamp2_fe.friendswalks.FriendsWalksFragment
+import com.example.madcamp2_fe.home.HomeFragment
+import com.example.madcamp2_fe.mywalks.MyWalksFragment
 import com.example.madcamp2_fe.databinding.ActivityWalkBinding
 import com.google.android.material.tabs.TabLayout
 

@@ -4,27 +4,35 @@ package com.example.madcamp2_fe
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import androidx.activity.viewModels
+import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
+import com.example.madcamp2_fe.login.LoginRequest
 import com.example.madcamp2_fe.databinding.ActivityMainBinding
+import com.example.madcamp2_fe.login.LoginViewModel
+import com.example.madcamp2_fe.login.UserClientManager
+import com.example.madcamp2_fe.utils.RESPONSE_STATE
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.KakaoSdk
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.Constants
+import com.kakao.sdk.user.Constants.TAG
 import com.kakao.sdk.user.UserApiClient
 
 
 class MainActivityLogin : AppCompatActivity() {
     private lateinit var binding : ActivityMainBinding
-    private val loginViewModel: UserViewModel by viewModels()
+    private lateinit var userViewModel : LoginViewModel
+    private var loginRequest = LoginRequest("")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         KakaoSdk.init(this,"710f05baaf03d564cb1cb51f782e5c03")
-
+        userViewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
 //        로그인 안된 경우에는 login 시작
+
         kakaoLoginRequest()
 
 
@@ -44,13 +52,30 @@ class MainActivityLogin : AppCompatActivity() {
     private fun kakaoLoginRequest(){
         val userId = binding.idBox.text
         val userPassword = binding.passwordBox.text
-
+        var loginRequest = LoginRequest("")
 
         val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
             if (error != null) {
                 Log.e(Constants.TAG, "카카오계정으로 로그인 실패", error)
             } else if (token != null) {
                 Log.i(Constants.TAG, "카카오계정으로 로그인 성공 ${token.accessToken}")
+
+                //transaction
+                loginRequest.token = token.accessToken
+                Log.d("before Manager", loginRequest.token)
+                UserClientManager.instance.login(loginRequest= loginRequest, completion = {
+                        responseState, responseBody ->
+                    when(responseState){
+                        RESPONSE_STATE.OKAY ->{
+                            Log.d(TAG, "로그인 성공 : $responseBody")
+                        }
+                        RESPONSE_STATE.FAIL ->{
+                            Toast.makeText(this, "login error", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                })
+                //
+
                 UserApiClient.instance.me{
                         user, error ->
                     if(error != null){
@@ -82,13 +107,18 @@ class MainActivityLogin : AppCompatActivity() {
                     )
                 } else if (token != null) {
                     Log.i(Constants.TAG, "카카오톡으로 로그인 성공 ${token.accessToken}")
-//
+
+
+
+
                 }
             }
         } else {
             UserApiClient.instance.loginWithKakaoAccount(this, callback = callback)
-//            kakaoLogin = true
         }
+
+
+
     }
 
 }
