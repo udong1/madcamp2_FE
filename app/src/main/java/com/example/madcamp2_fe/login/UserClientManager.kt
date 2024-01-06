@@ -13,7 +13,7 @@ class UserClientManager {
     }
     private val userLoginInterface : UserInterface? = UserClient.getClient(API.BASE_URL)?.create(UserInterface::class.java)
 
-    fun login(loginRequest : LoginRequest, completion:(RESPONSE_STATE, String)-> Unit){
+    fun login(loginRequest : LoginRequest, completion:(RESPONSE_STATE, LoginResponse)-> Unit){
         Log.d("login1", "$userLoginInterface")
         val call = userLoginInterface?.login(loginRequest) ?:return
         Log.d("login2", "$call")
@@ -22,7 +22,7 @@ class UserClientManager {
                 Log.d("response.isSuccessful", "${response.isSuccessful}")
                 if (response.isSuccessful){
                     Log.d(TAG, "응답 성공 ${response.body()}")
-                    completion(RESPONSE_STATE.OKAY, response.body().toString())
+                    completion(RESPONSE_STATE.OKAY, response.body()!!)
                 }
                 else{
                     Log.d(TAG, "응답 실패")
@@ -32,7 +32,7 @@ class UserClientManager {
 
             override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
                 Log.d(TAG, "응답 실패 on Failure")
-                completion(RESPONSE_STATE.FAIL, t.toString())
+                completion(RESPONSE_STATE.FAIL, LoginResponse("", "", false, ""))
             }
         })
 

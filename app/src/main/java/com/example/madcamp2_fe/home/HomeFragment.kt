@@ -38,9 +38,7 @@ class HomeFragment : Fragment() {
         _binding = null
     }
     companion object {
-        fun newInstance(){
-
+        fun newInstance(userAccessToken:String, userRefreshToken:String, userIsRegistered:Boolean){
         }
-
     }
 }

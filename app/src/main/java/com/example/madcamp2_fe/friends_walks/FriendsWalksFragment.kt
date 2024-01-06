@@ -1,22 +1,16 @@
-package com.example.madcamp2_fe.mywalks
+package com.example.madcamp2_fe.friends_walks
 
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import com.example.madcamp2_fe.databinding.FragmentFriendsWalksBinding
 
-
-class MyWalksFragment : Fragment() {
+class FriendsWalksFragment : Fragment() {
 
     private var _binding : FragmentFriendsWalksBinding? = null
     private val binding get() = _binding!!
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,9 +22,11 @@ class MyWalksFragment : Fragment() {
     }
 
     companion object {
+
         fun newInstance(){
 
         }
+
     }
     override fun onDestroyView() {
         super.onDestroyView()

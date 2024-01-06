@@ -3,9 +3,9 @@ package com.example.madcamp2_fe
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import com.example.madcamp2_fe.friendswalks.FriendsWalksFragment
+import com.example.madcamp2_fe.friends_walks.FriendsWalksFragment
 import com.example.madcamp2_fe.home.HomeFragment
-import com.example.madcamp2_fe.mywalks.MyWalksFragment
+import com.example.madcamp2_fe.my_walks.MyWalksFragment
 import com.example.madcamp2_fe.databinding.ActivityWalkBinding
 import com.google.android.material.tabs.TabLayout
 
@@ -14,10 +14,14 @@ class WalkActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityWalkBinding.inflate(layoutInflater)
-        setContentView(R.layout.activity_walk)
+        setContentView(binding.root)
         val home : Fragment = HomeFragment()
         val myWalks : Fragment = MyWalksFragment()
         val friendsWalks : Fragment = FriendsWalksFragment()
+        val intent = intent
+        val userAccessToken = intent.getStringExtra("accessToken")
+        val userRefreshToken = intent.getStringExtra("refreshToken")
+        val userIsRegistered = intent.getBooleanExtra("isRegistered", false)
 
         supportFragmentManager.beginTransaction()
             .replace(R.id.frame, home)

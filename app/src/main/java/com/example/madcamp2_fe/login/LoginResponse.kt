@@ -4,7 +4,9 @@ import com.google.gson.annotations.SerializedName
 
 
 data class LoginResponse(
-    @SerializedName("access_token") var acess_token : String,
-    @SerializedName("refresh_token") var refresh_token : String,
-    @SerializedName("is_registered") var is_registered : Boolean=false
+    @SerializedName("nickname") var nickname : String,
+    @SerializedName("access_token") var accessToken : String,
+    @SerializedName("is_registered") var isRegistered : Boolean=false,
+    @SerializedName("profile_img") var profileImg : String
+
 )
