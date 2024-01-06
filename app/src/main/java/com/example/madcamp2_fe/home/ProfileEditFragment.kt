@@ -1,54 +1,51 @@
 package com.example.madcamp2_fe.home
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.madcamp2_fe.R
-import com.example.madcamp2_fe.WalkActivity
 import com.example.madcamp2_fe.WalkViewModel
 import com.example.madcamp2_fe.databinding.FragmentHomeBinding
+import com.example.madcamp2_fe.databinding.FragmentProfileEditBinding
 
+class ProfileEditFragment : Fragment() {
 
-class HomeFragment : Fragment() {
-
-    private var _binding : FragmentHomeBinding? = null
+    private var _binding : FragmentProfileEditBinding? = null
     private lateinit var walkViewModel : WalkViewModel
     private val binding get() = _binding!!
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        _binding = FragmentProfileEditBinding.inflate(inflater, container, false)
         walkViewModel = ViewModelProvider(requireActivity()).get(WalkViewModel::class.java)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        var nameEdit : String = ""
+        var imgEdit : String = ""
+
         Glide.with(this)
             .load(R.drawable.background)
             .into(binding.background)
-        binding.homeName.text="안녕하세요 ${walkViewModel.getUserName()}님 :)"
-        Glide.with(this)
-            .load(walkViewModel.getUserProfileImg())
-            .into(binding.profile)
-        binding.settingButton.setOnClickListener{
-            val profileEditFragment = ProfileEditFragment.newInstance()
-            requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.frame, profileEditFragment)
-                .addToBackStack(null)
-                .commit()
+        binding.cancel.setOnClickListener{
+            requireActivity().supportFragmentManager.popBackStack()
+        }
+        binding.confirm.setOnClickListener{
+            //백엔드로 posting
+            walkViewModel.setUserInfo(nameEdit, walkViewModel.getUserAccessToken(), walkViewModel.getUserIsRegistered())
+            walkViewModel.setUserProfile(imgEdit)
+        }
+        binding.imageUpdateButton.setOnClickListener{
+            //갤러리로 연결
+            //뷰모델로 연결
         }
     }
 
@@ -57,7 +54,8 @@ class HomeFragment : Fragment() {
         _binding = null
     }
     companion object {
-        fun newInstance(userAccessToken:String, userRefreshToken:String, userIsRegistered:Boolean){
+        fun newInstance() : ProfileEditFragment {
+            return ProfileEditFragment()
         }
     }
 }

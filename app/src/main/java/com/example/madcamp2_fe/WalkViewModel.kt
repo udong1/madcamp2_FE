@@ -20,10 +20,12 @@ class WalkViewModel : ViewModel() {
     fun getUserProfileImg():String{
         return userProfileImg
     }
-    fun setUserInfo(name : String,token : String, bool : Boolean, img : String){
+    fun setUserInfo(name : String,token : String, bool : Boolean){
         userNickname = name
         userAccessToken = token
         userIsRegistered = bool
+    }
+    fun setUserProfile(img:String){
         userProfileImg = img
     }
 

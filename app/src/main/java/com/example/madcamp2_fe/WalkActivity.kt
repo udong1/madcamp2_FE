@@ -31,7 +31,8 @@ class WalkActivity : AppCompatActivity() {
         val userIsRegistered = intent.getBooleanExtra("isRegistered", false)
         val userProfileImg = intent.getStringExtra("profileImg")
 
-        walkViewModel.setUserInfo(userNickname!!, userAccessToken!!, userIsRegistered, userProfileImg!!)
+        walkViewModel.setUserInfo(userNickname!!, userAccessToken!!, userIsRegistered)
+        walkViewModel.setUserProfile(userProfileImg!!)
 
         supportFragmentManager.beginTransaction()
             .replace(R.id.frame, home)

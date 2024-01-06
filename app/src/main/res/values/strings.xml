@@ -14,4 +14,7 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
+    <string name="nickname">닉네임</string>
+    <string name="email">이메일</string>
+    <string name="emailWarning">* 이메일은 변경할 수 없어요 *</string>
 </resources>
