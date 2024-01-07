@@ -39,10 +39,17 @@ class HomeFragment : Fragment() {
         Glide.with(this)
             .load(R.drawable.background)
             .into(binding.background)
-        binding.homeName.text="안녕하세요 ${walkViewModel.getUserName()}님 :)"
+
         Glide.with(this)
             .load(walkViewModel.getUserProfileImg())
             .into(binding.profile)
+
+        Glide.with(this)
+            .load(R.drawable.white_background)
+            .into(binding.lowerPartBack)
+
+        binding.homeName.text=walkViewModel.getUserName()
+
         binding.settingButton.setOnClickListener{
             val profileEditFragment = ProfileEditFragment.newInstance()
             requireActivity().supportFragmentManager.beginTransaction()

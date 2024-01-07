@@ -4,12 +4,16 @@ import androidx.lifecycle.ViewModel
 
 class WalkViewModel : ViewModel() {
     private lateinit var userNickname : String
+    private lateinit var userEmail : String
     private lateinit var userAccessToken : String
     private var userIsRegistered : Boolean = false
     private lateinit var userProfileImg : String
 
     fun getUserName():String{
         return userNickname
+    }
+    fun getUserEmail():String{
+        return userEmail
     }
     fun getUserAccessToken():String{
         return userAccessToken
@@ -20,8 +24,9 @@ class WalkViewModel : ViewModel() {
     fun getUserProfileImg():String{
         return userProfileImg
     }
-    fun setUserInfo(name : String,token : String, bool : Boolean){
+    fun setUserInfo(name : String, email:String, token : String, bool : Boolean){
         userNickname = name
+        userEmail = email
         userAccessToken = token
         userIsRegistered = bool
     }

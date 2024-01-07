@@ -35,7 +35,7 @@ class UserClientManager {
 
             override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
                 Log.d(TAG, "응답 실패 on Failure")
-                completion(RESPONSE_STATE.FAIL, LoginResponse("", "", false, ""))
+                completion(RESPONSE_STATE.FAIL, LoginResponse("", "", "",false, ""))
             }
         })
 

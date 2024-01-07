@@ -39,6 +39,7 @@ class MainActivityLogin : AppCompatActivity() {
             val intent = Intent(this, WalkActivity::class.java)
             if (loginInfo.value!!.accessToken != ""){
                 intent.putExtra("nickname", loginInfo.value!!.nickname)
+                intent.putExtra("email", loginInfo.value!!.email)
                 intent.putExtra("accessToken", loginInfo.value!!.accessToken)
                 intent.putExtra("isRegistered", loginInfo.value!!.isRegistered)
                 intent.putExtra("profileImg", loginInfo.value!!.profileImg)

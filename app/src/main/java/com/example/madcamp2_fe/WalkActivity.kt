@@ -27,11 +27,12 @@ class WalkActivity : AppCompatActivity() {
         val friendsWalks : Fragment = FriendsWalksFragment()
         val intent = intent
         val userNickname = intent.getStringExtra("nickname")
+        val userEmail = intent.getStringExtra("email")
         val userAccessToken = intent.getStringExtra("accessToken")
         val userIsRegistered = intent.getBooleanExtra("isRegistered", false)
         val userProfileImg = intent.getStringExtra("profileImg")
 
-        walkViewModel.setUserInfo(userNickname!!, userAccessToken!!, userIsRegistered)
+        walkViewModel.setUserInfo(userNickname!!,userEmail!!, userAccessToken!!, userIsRegistered)
         walkViewModel.setUserProfile(userProfileImg!!)
 
         supportFragmentManager.beginTransaction()
