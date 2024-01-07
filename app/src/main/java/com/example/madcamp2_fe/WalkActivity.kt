@@ -41,24 +41,22 @@ class WalkActivity : AppCompatActivity() {
         walkViewModel.setUserInfo(userNickname!!,userEmail!!, userAccessToken!!, userIsRegistered)
         walkViewModel.setUserProfile(userProfileImg!!)
 
-
         val readPermission = ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE)
         val writePermission = ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
         val cameraPermission = ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA)
+        val finePermission = ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
+        val coarsePermission = ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION)
         if (writePermission == PackageManager.PERMISSION_DENIED ||
             readPermission == PackageManager.PERMISSION_DENIED ||
-            cameraPermission == PackageManager.PERMISSION_DENIED){
+            cameraPermission == PackageManager.PERMISSION_DENIED ||
+            finePermission == PackageManager.PERMISSION_DENIED ||
+            coarsePermission == PackageManager.PERMISSION_DENIED){
             ActivityCompat.requestPermissions(this,
                 arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE,
-                    android.Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
-        }
-        else{
-            var state = Environment.getExternalStorageState()
-            if (TextUtils.equals(state, Environment.MEDIA_MOUNTED)){
-                val intent = Intent(Intent.ACTION_PICK)
-                intent.type = "image/*"
-//                getResult.launch(intent)
-            }
+                    android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    android.Manifest.permission.CAMERA,
+                    android.Manifest.permission.ACCESS_FINE_LOCATION,
+                    android.Manifest.permission.ACCESS_COARSE_LOCATION), 1)
         }
 
 
@@ -93,4 +91,6 @@ class WalkActivity : AppCompatActivity() {
         })
 
     }
+
+
 }

@@ -65,7 +65,10 @@ class ProfileEditFragment : Fragment() {
             val bundle = Bundle().apply{
                 putParcelable("GALLERY_RESULT", result)
             }
-            setFragmentResult("GALLERY_REQUEST", bundle)
+            if(result!=null)
+            {
+                setFragmentResult("GALLERY_REQUEST", bundle)
+            }
         }
         return binding.root
     }

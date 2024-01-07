@@ -70,12 +70,13 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.2")
 
     implementation("com.kakao.sdk:v2-all:2.19.0")
+    implementation("com.kakao.maps.open:android:2.6.0")
     
     //레트로핏
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 
-    implementation("com.google.firebase:firebase-crashlytics-buildtools:2.9.9")
+    implementation("com.google.android.gms:play-services-location:21.0.1")
     implementation("io.ktor:ktor-client-android:1.6.4")
     implementation("io.ktor:ktor-client-core:1.6.4")
     implementation("io.ktor:ktor-client-serialization:1.6.4")

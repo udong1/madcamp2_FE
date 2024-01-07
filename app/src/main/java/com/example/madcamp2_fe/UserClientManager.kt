@@ -1,6 +1,8 @@
 package com.example.madcamp2_fe
 
 import android.util.Log
+import com.example.madcamp2_fe.home.UpdateRequest
+import com.example.madcamp2_fe.home.UpdateResponse
 import com.example.madcamp2_fe.login.LoginRequest
 import com.example.madcamp2_fe.login.LoginResponse
 import com.example.madcamp2_fe.utils.API
@@ -38,6 +40,29 @@ class UserClientManager {
                 completion(RESPONSE_STATE.FAIL, LoginResponse("", "", "",false, ""))
             }
         })
-
     }
+
+//    fun updateUserInfo(updateRequest:UpdateRequest, completion:(RESPONSE_STATE, UpdateResponse) -> Unit){
+//        val call = userLoginInterface?.updateUserInfo(updateRequest) ?:return
+//        call.enqueue(object : retrofit2.Callback<UpdateResponse>{
+//            override fun onFailure(call: Call<UpdateResponse>, t: Throwable) {
+//                Log.d(TAG, "응답 실패 on Failure")
+//                completion(RESPONSE_STATE.FAIL, UpdateResponse("", ""))
+//            }
+//
+//            override fun onResponse(
+//                call: Call<UpdateResponse>,
+//                response: Response<UpdateResponse>
+//            ) {
+//                if (response.isSuccessful){
+//                    Log.d(TAG, "응답 성공 ${response.body()}")
+//                    completion(RESPONSE_STATE.OKAY, response.body()!!)
+//                }
+//                else{
+//                    Log.d(TAG, "응답 실패")
+//                    Log.d(TAG, "${response.errorBody()}")
+//                }
+//            }
+//        })
+//    }
 }
