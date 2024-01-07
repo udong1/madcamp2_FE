@@ -33,6 +33,9 @@ class WalkViewModel : ViewModel() {
     fun setUserProfile(img:String){
         userProfileImg = img
     }
+    fun changeUserName(changedName : String){
+        userNickname = changedName
+    }
 
 
 }

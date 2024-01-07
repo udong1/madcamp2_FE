@@ -5,6 +5,11 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false"/>
 
     <application
         android:allowBackup="true"
@@ -17,6 +22,16 @@
         android:usesCleartextTraffic="true"
         android:theme="@style/Theme.Madcamp2_FE"
         tools:targetApi="31">
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.example.madcamp2_fe.fileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/external"/>
+        </provider>
+
         <activity
             android:name=".WalkActivity"
             android:exported="false" />

@@ -1,8 +1,14 @@
 package com.example.madcamp2_fe
 
+import android.content.Intent
+import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Environment
+import android.text.TextUtils
 import android.util.Log
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.madcamp2_fe.friends_walks.FriendsWalksFragment
@@ -34,6 +40,28 @@ class WalkActivity : AppCompatActivity() {
 
         walkViewModel.setUserInfo(userNickname!!,userEmail!!, userAccessToken!!, userIsRegistered)
         walkViewModel.setUserProfile(userProfileImg!!)
+
+
+        val readPermission = ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE)
+        val writePermission = ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        val cameraPermission = ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA)
+        if (writePermission == PackageManager.PERMISSION_DENIED ||
+            readPermission == PackageManager.PERMISSION_DENIED ||
+            cameraPermission == PackageManager.PERMISSION_DENIED){
+            ActivityCompat.requestPermissions(this,
+                arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE,
+                    android.Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
+        }
+        else{
+            var state = Environment.getExternalStorageState()
+            if (TextUtils.equals(state, Environment.MEDIA_MOUNTED)){
+                val intent = Intent(Intent.ACTION_PICK)
+                intent.type = "image/*"
+//                getResult.launch(intent)
+            }
+        }
+
+
 
         supportFragmentManager.beginTransaction()
             .replace(R.id.frame, home)
