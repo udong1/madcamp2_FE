@@ -24,6 +24,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.example.madcamp2_fe.R
 import com.example.madcamp2_fe.WalkActivity
 import com.example.madcamp2_fe.WalkViewModel
@@ -72,17 +73,12 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Glide.with(this)
-            .load(R.drawable.background)
-            .into(binding.background)
+
 
         Glide.with(this)
             .load(walkViewModel.getUserProfileImg())
             .into(binding.profile)
 
-        Glide.with(this)
-            .load(R.drawable.white_background)
-            .into(binding.lowerPartBack)
 
         binding.mapView.start(object : MapLifeCycleCallback() {
             override fun onMapDestroy() {
@@ -104,9 +100,6 @@ class HomeFragment : Fragment() {
                 kakaoMap.setGestureEnable(GestureType.RotateZoom, false)
                 kakaoMap.setGestureEnable(GestureType.LongTapAndDrag, false)
             }
-//            override fun getPosition(): LatLng {
-//                return LatLng.from(36.3742471,127.3660806)
-//            }
             override fun getZoomLevel(): Int {
                 return 15
             }
@@ -133,7 +126,7 @@ class HomeFragment : Fragment() {
     fun getLocation(){
         fusedLocationClient.lastLocation
             .addOnSuccessListener { location:Location? ->
-                if(location ==null){
+                if(location == null){
                     Log.d("location", "Location is null")
                 }
                 else{

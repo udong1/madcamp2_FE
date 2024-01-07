@@ -4,25 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".home.HomeFragment"
-    tools:backgroundTint ="#74BA81">
-
-
-    <ImageView
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"
-        android:scaleType="centerCrop"
-        android:id="@+id/background" />
+    android:elevation="0dp"
+    tools:context=".home.HomeFragment">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="#74BA81"
+        android:src="@drawable/single_color_back">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/upperPart"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:backgroundTint="#74BA81"
             app:layout_constraintBottom_toTopOf="@id/lowerPart"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -95,11 +91,11 @@
                         android:id="@+id/homeName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
                         android:text="이름"
                         android:textColor="@color/white"
                         android:textSize="20sp"
                         android:textStyle="bold"
-                        android:layout_marginLeft="10dp"
                         app:layout_constraintLeft_toRightOf="@id/hello"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -140,36 +136,45 @@
             android:id="@+id/lowerPart"
             android:layout_width="match_parent"
             android:layout_height="300dp"
+            android:background="@drawable/rounded_back"
             android:backgroundTint="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent">
 
+
             <ImageView
-                android:id="@+id/lowerPartBack"
+                android:id="@+id/imageView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                android:scaleType="centerCrop"
-                android:adjustViewBounds="true"/>
+                android:scaleType="fitStart"
+                android:src="@drawable/white_rounded_back" />
 
-            <com.kakao.vectormap.MapView
+            <androidx.cardview.widget.CardView
                 android:layout_width="300dp"
                 android:layout_height="200dp"
-                android:id="@+id/mapView"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="0dp"
+                app:cardMaxElevation="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.kakao.vectormap.MapView
+                    android:id="@+id/mapView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.cardview.widget.CardView>
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
-
-
 
 
 </FrameLayout>
