@@ -24,6 +24,7 @@ class WalkViewModel : ViewModel() {
     private lateinit var userAccessToken : String
     private var userIsRegistered : Boolean = false
     private lateinit var userProfileImg : String
+    private var profileChanged : MutableLiveData<Boolean> = MutableLiveData(false)
     private var lon : MutableLiveData<Double> = MutableLiveData()
     private var lat : MutableLiveData<Double> = MutableLiveData()
 
@@ -49,6 +50,9 @@ class WalkViewModel : ViewModel() {
     fun getLat():MutableLiveData<Double>{
         return lat
     }
+    fun getProfileChanged():MutableLiveData<Boolean>{
+        return profileChanged
+    }
     fun setLon(longitude : Double){
         lon.value = longitude
     }
@@ -66,6 +70,9 @@ class WalkViewModel : ViewModel() {
     }
     fun changeUserName(changedName : String){
         userNickname = changedName
+    }
+    fun setProfileChanged(bool:Boolean){
+        profileChanged.value = bool
     }
 
 

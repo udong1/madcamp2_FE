@@ -3,6 +3,9 @@ package com.example.madcamp2_fe.home
 import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.database.Cursor
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.net.Uri
 import android.os.Build
@@ -17,6 +20,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultCallback
@@ -35,7 +40,18 @@ import com.example.madcamp2_fe.R
 import com.example.madcamp2_fe.WalkViewModel
 import com.example.madcamp2_fe.databinding.FragmentHomeBinding
 import com.example.madcamp2_fe.databinding.FragmentProfileEditBinding
+import com.example.madcamp2_fe.profile_update_client.UpdateRequest
+import com.example.madcamp2_fe.user_client.UserClientManager
+import com.example.madcamp2_fe.utils.RESPONSE_STATE
+import com.kakao.sdk.user.Constants
+import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
+import java.io.FileOutputStream
+import java.io.InputStream
 
 class ProfileEditFragment : Fragment() {
 
@@ -64,6 +80,7 @@ class ProfileEditFragment : Fragment() {
         // Inflate the layout for this fragment
         _binding = FragmentProfileEditBinding.inflate(inflater, container, false)
         walkViewModel = ViewModelProvider(requireActivity()).get(WalkViewModel::class.java)
+        editImg = false
         pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()){ result ->
             val bundle = Bundle().apply{
                 putParcelable("GALLERY_RESULT", result)
@@ -95,11 +112,28 @@ class ProfileEditFragment : Fragment() {
         }
         binding.confirm.setOnClickListener{
             //백엔드로 posting
-            //뷰모델 업데이트
-            walkViewModel.changeUserName(nameEdit)
-            if (editImg) {
-                walkViewModel.setUserProfile(userSelectImg.toString())
+            if (!editImg) {
+                userSelectImg = Uri.parse(walkViewModel.getUserProfileImg())
             }
+            UserClientManager.instance.updateProfile(
+                userName = RequestBody.create("text/plain".toMediaTypeOrNull(), nameEdit),
+                token = walkViewModel.getUserAccessToken(),
+                profileImg = uriToMultipartBodyPart(userSelectImg),
+                completion = {
+                    responseState, responseBody ->
+                when(responseState){
+                    RESPONSE_STATE.OKAY ->{
+                        Log.d(Constants.TAG, "업데이트 성공 : $responseBody")
+                        walkViewModel.changeUserName(responseBody.updatedNickname)
+                        walkViewModel.setUserProfile(responseBody.updatedProfileImg)
+                        walkViewModel.setProfileChanged(true)
+                    }
+                    RESPONSE_STATE.FAIL ->{
+                        //Toast.makeText(requireActivity(), "없데이트", Toast.LENGTH_SHORT).show()
+                        Log.d(Constants.TAG, "없데이트")
+                    }
+                }
+            })
             requireActivity().supportFragmentManager.popBackStack()
         }
         binding.imageUpdateButton.setOnClickListener{
@@ -131,12 +165,32 @@ class ProfileEditFragment : Fragment() {
         })
 
     }
+    private fun uriToMultipartBodyPart(uri: Uri): MultipartBody.Part {
+        val inputStream: InputStream? = context?.contentResolver?.openInputStream(uri)
+        val file: File = createTempFileFromInputStream(inputStream)
+
+        val requestFile: RequestBody = RequestBody.create("image/*".toMediaTypeOrNull(), file)
+        return MultipartBody.Part.createFormData("profileImg", file.name, requestFile)
+    }
+
+    private fun createTempFileFromInputStream(inputStream: InputStream?): File {
+        val tempFile = File.createTempFile("temp_image", null)
+        tempFile.deleteOnExit()
+
+        inputStream?.use { input ->
+            FileOutputStream(tempFile).use { output ->
+                input.copyTo(output)
+            }
+        }
+        return tempFile
+    }
 
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
+
     companion object {
         fun newInstance() : ProfileEditFragment {
             return ProfileEditFragment()

@@ -1,4 +1,4 @@
-package com.example.madcamp2_fe.home
+package com.example.madcamp2_fe.profile_update_client
 
 import com.google.gson.annotations.SerializedName
 

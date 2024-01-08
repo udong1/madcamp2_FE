@@ -1,4 +1,4 @@
-package com.example.madcamp2_fe
+package com.example.madcamp2_fe.user_client
 
 import android.util.Log
 import com.kakao.sdk.user.Constants.TAG
@@ -35,5 +35,4 @@ object UserClient{
         Log.d(TAG, "RetrofitClient - getClient() called, $userLoginClient")
         return userLoginClient
     }
-
 }

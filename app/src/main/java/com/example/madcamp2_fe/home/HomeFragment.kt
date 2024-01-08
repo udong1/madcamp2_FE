@@ -16,6 +16,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -68,18 +70,25 @@ class HomeFragment : Fragment() {
         // Inflate the layout for this fragment
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         walkViewModel = ViewModelProvider(requireActivity()).get(WalkViewModel::class.java)
+        Glide.with(this)
+            .load(walkViewModel.getUserProfileImg())
+            .into(binding.profile)
+        binding.homeName.text=walkViewModel.getUserName()
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-        Glide.with(this)
-            .load(walkViewModel.getUserProfileImg())
-            .into(binding.profile)
-
-
+        walkViewModel.getProfileChanged().observe(requireActivity(), Observer {
+            if (it){
+                Glide.with(this)
+                    .load(walkViewModel.getUserProfileImg())
+                    .into(binding.profile)
+                binding.homeName.text=walkViewModel.getUserName()
+                walkViewModel.setProfileChanged(false)
+            }
+        })
         binding.mapView.start(object : MapLifeCycleCallback() {
             override fun onMapDestroy() {
             }
@@ -106,8 +115,6 @@ class HomeFragment : Fragment() {
         })
 
 
-        binding.homeName.text=walkViewModel.getUserName()
-
         binding.settingButton.setOnClickListener{
             val profileEditFragment = ProfileEditFragment.newInstance()
             requireActivity().supportFragmentManager.beginTransaction()
@@ -116,6 +123,7 @@ class HomeFragment : Fragment() {
                 .commit()
         }
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
