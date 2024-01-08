@@ -1,8 +1,9 @@
 package com.example.madcamp2_fe.user_client
 
 import android.util.Log
-import com.example.madcamp2_fe.profile_update_client.UpdateRequest
-import com.example.madcamp2_fe.profile_update_client.UpdateResponse
+import com.example.madcamp2_fe.login.LoginRequest
+import com.example.madcamp2_fe.login.LoginResponse
+import com.example.madcamp2_fe.profile_update.UpdateResponse
 import com.example.madcamp2_fe.utils.API
 import com.example.madcamp2_fe.utils.RESPONSE_STATE
 import com.kakao.sdk.user.Constants
@@ -11,7 +12,6 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Response
-import java.io.File
 
 class UserClientManager {
     companion object{
@@ -48,7 +48,6 @@ class UserClientManager {
         Log.d("updateProfile", "$userInterface")
         val call = userInterface?.updateUserInfo("Bearer $token", profileImg, userName) ?:return
         Log.d("token",token)
-        Log.d("profileImg","$profileImg")
         Log.d("userName","$userName")
         call.enqueue(object : retrofit2.Callback<UpdateResponse>{
             override fun onResponse(call: Call<UpdateResponse>, response: Response<UpdateResponse>) {

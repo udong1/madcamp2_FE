@@ -8,9 +8,9 @@ import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import com.example.madcamp2_fe.user_client.LoginRequest
+import com.example.madcamp2_fe.login.LoginRequest
 import com.example.madcamp2_fe.databinding.ActivityMainBinding
-import com.example.madcamp2_fe.user_client.LoginResponse
+import com.example.madcamp2_fe.login.LoginResponse
 import com.example.madcamp2_fe.user_client.UserClientManager
 import com.example.madcamp2_fe.utils.RESPONSE_STATE
 import com.kakao.sdk.auth.model.OAuthToken
@@ -63,8 +63,6 @@ class MainActivityLogin : AppCompatActivity() {
         }
     }
     private fun kakaoLoginRequest(){
-        val userId = binding.idBox.text
-        val userPassword = binding.passwordBox.text
         var loginRequest = LoginRequest("")
 
         val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->

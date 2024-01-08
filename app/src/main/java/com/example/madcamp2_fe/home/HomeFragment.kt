@@ -70,19 +70,10 @@ class HomeFragment : Fragment() {
         // Inflate the layout for this fragment
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         walkViewModel = ViewModelProvider(requireActivity()).get(WalkViewModel::class.java)
-        if (walkViewModel.getUserProfileImg() == "null"){
-            Glide.with(this)
-                .load(R.drawable.default_image)
-                .into(binding.profile)
-        }
-        else{
-            Glide.with(this)
-                .load(walkViewModel.getUserProfileImg())
-                .into(binding.profile)
-        }
-
+        Glide.with(this)
+            .load(walkViewModel.getUserProfileImg())
+            .into(binding.profile)
         binding.homeName.text=walkViewModel.getUserName()
-
         return binding.root
     }
 
@@ -140,6 +131,9 @@ class HomeFragment : Fragment() {
             binding.stop.setOnClickListener {
                 //location listener 정지
             }
+//            binding.terminate.setOnLongClickListener {
+//                //산책 종료
+//            }
 
 
         }

@@ -2,6 +2,7 @@ package com.example.madcamp2_fe
 
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
@@ -39,7 +40,16 @@ class WalkActivity : AppCompatActivity() {
         val userProfileImg = intent.getStringExtra("profileImg")
 
         walkViewModel.setUserInfo(userNickname!!,userEmail!!, userAccessToken!!, userIsRegistered)
-        walkViewModel.setUserProfile(userProfileImg!!)
+        if (userProfileImg == null){
+            val assetImagePath = "images/default_profile.png"
+            val assetUri:Uri = Uri.parse("file:///android_asset/$assetImagePath")
+            val assetUriString:String = assetUri.toString()
+            walkViewModel.setUserProfile(assetUriString)
+            Log.d("assetUriString", assetUriString)
+        }
+        else{
+            walkViewModel.setUserProfile(userProfileImg)
+        }
 
         val readPermission = ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE)
         val writePermission = ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -67,7 +77,7 @@ class WalkActivity : AppCompatActivity() {
 
         binding.tabBar.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener{
             override fun onTabSelected(tab: TabLayout.Tab){
-                when (tab?.text){
+                when (tab.text){
                     "Home"->{
                         supportFragmentManager.beginTransaction().replace(R.id.frame, home)
                             .commit()
