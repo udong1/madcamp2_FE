@@ -70,10 +70,19 @@ class HomeFragment : Fragment() {
         // Inflate the layout for this fragment
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         walkViewModel = ViewModelProvider(requireActivity()).get(WalkViewModel::class.java)
-        Glide.with(this)
-            .load(walkViewModel.getUserProfileImg())
-            .into(binding.profile)
+        if (walkViewModel.getUserProfileImg() == "null"){
+            Glide.with(this)
+                .load(R.drawable.default_image)
+                .into(binding.profile)
+        }
+        else{
+            Glide.with(this)
+                .load(walkViewModel.getUserProfileImg())
+                .into(binding.profile)
+        }
+
         binding.homeName.text=walkViewModel.getUserName()
+
         return binding.root
     }
 
@@ -99,15 +108,15 @@ class HomeFragment : Fragment() {
             override fun onMapReady(map: KakaoMap) {
                 kakaoMap = map
                 getLocation()
-                kakaoMap.setGestureEnable(GestureType.OneFingerDoubleTap, false)
-                kakaoMap.setGestureEnable(GestureType.TwoFingerSingleTap, false)
-                kakaoMap.setGestureEnable(GestureType.Zoom, false)
-                kakaoMap.setGestureEnable(GestureType.OneFingerZoom, false)
-                kakaoMap.setGestureEnable(GestureType.Pan, false)
-                kakaoMap.setGestureEnable(GestureType.Tilt, false)
-                kakaoMap.setGestureEnable(GestureType.Rotate, false)
-                kakaoMap.setGestureEnable(GestureType.RotateZoom, false)
-                kakaoMap.setGestureEnable(GestureType.LongTapAndDrag, false)
+//                kakaoMap.setGestureEnable(GestureType.OneFingerDoubleTap, false)
+//                kakaoMap.setGestureEnable(GestureType.TwoFingerSingleTap, false)
+//                kakaoMap.setGestureEnable(GestureType.Zoom, false)
+//                kakaoMap.setGestureEnable(GestureType.OneFingerZoom, false)
+//                kakaoMap.setGestureEnable(GestureType.Pan, false)
+//                kakaoMap.setGestureEnable(GestureType.Tilt, false)
+//                kakaoMap.setGestureEnable(GestureType.Rotate, false)
+//                kakaoMap.setGestureEnable(GestureType.RotateZoom, false)
+//                kakaoMap.setGestureEnable(GestureType.LongTapAndDrag, false)
             }
             override fun getZoomLevel(): Int {
                 return 15
@@ -121,6 +130,18 @@ class HomeFragment : Fragment() {
                 .replace(R.id.frame, profileEditFragment)
                 .addToBackStack(null)
                 .commit()
+        }
+
+        binding.startButton.setOnClickListener {
+            binding.upperProfile.visibility = View.GONE
+            binding.startButton.visibility = View.GONE
+            binding.menu.visibility = View.VISIBLE
+
+            binding.stop.setOnClickListener {
+                //location listener 정지
+            }
+
+
         }
     }
 

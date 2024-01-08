@@ -58,7 +58,7 @@ class ProfileEditFragment : Fragment() {
     private var _binding : FragmentProfileEditBinding? = null
     private lateinit var walkViewModel : WalkViewModel
     private val binding get() = _binding!!
-    private lateinit var userSelectImg : Uri
+    private var userSelectImg : Uri? = null
     private var editImg = false
     private lateinit var pickMedia :ActivityResultLauncher<PickVisualMediaRequest>
 
@@ -90,6 +90,7 @@ class ProfileEditFragment : Fragment() {
                 setFragmentResult("GALLERY_REQUEST", bundle)
                 binding.confirm.isEnabled = true
                 editImg = true
+                binding.confirm.setTextColor(Color.BLACK)
             }
         }
         return binding.root
@@ -113,7 +114,8 @@ class ProfileEditFragment : Fragment() {
         binding.confirm.setOnClickListener{
             //백엔드로 posting
             if (!editImg) {
-                userSelectImg = Uri.parse(walkViewModel.getUserProfileImg())
+                userSelectImg = null
+                Log.d("userSelectImg", "$userSelectImg")
             }
             UserClientManager.instance.updateProfile(
                 userName = RequestBody.create("text/plain".toMediaTypeOrNull(), nameEdit),
@@ -139,8 +141,6 @@ class ProfileEditFragment : Fragment() {
         binding.imageUpdateButton.setOnClickListener{
             //갤러리로 연결
             pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-            binding.confirm.setTextColor(Color.BLACK)
-
         }
         binding.confirm.setTextColor(Color.LTGRAY)
         binding.confirm.isEnabled = false
@@ -165,12 +165,15 @@ class ProfileEditFragment : Fragment() {
         })
 
     }
-    private fun uriToMultipartBodyPart(uri: Uri): MultipartBody.Part {
-        val inputStream: InputStream? = context?.contentResolver?.openInputStream(uri)
-        val file: File = createTempFileFromInputStream(inputStream)
-
-        val requestFile: RequestBody = RequestBody.create("image/*".toMediaTypeOrNull(), file)
-        return MultipartBody.Part.createFormData("profileImg", file.name, requestFile)
+    private fun uriToMultipartBodyPart(uri: Uri?): MultipartBody.Part? {
+        return if(uri != null){
+            val inputStream: InputStream? = context?.contentResolver?.openInputStream(uri)
+            val file: File = createTempFileFromInputStream(inputStream)
+            val requestFile: RequestBody = RequestBody.create("image/*".toMediaTypeOrNull(), file)
+            MultipartBody.Part.createFormData("profileImg", file.name, requestFile)
+        } else{
+            null
+        }
     }
 
     private fun createTempFileFromInputStream(inputStream: InputStream?): File {

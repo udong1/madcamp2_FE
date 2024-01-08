@@ -24,7 +24,7 @@ interface UserInterface {
     @POST(API.UPDATE)
     fun updateUserInfo(
         @Header("Authorization") authorization:String,
-        @Part profileImg: MultipartBody.Part,
+        @Part profileImg: MultipartBody.Part?,
         @Part("nickname") userName: RequestBody
     ) : Call<UpdateResponse>
 }

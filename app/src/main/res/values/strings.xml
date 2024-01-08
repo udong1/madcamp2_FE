@@ -20,4 +20,6 @@
     <string name="smile">님 :)</string>
     <string name="greeting">안녕하세요</string>
     <string name="store">저장</string>
+    <string name="time">시간</string>
+    <string name="distance">거리</string>
 </resources>

@@ -44,11 +44,11 @@ class UserClientManager {
         })
     }
 
-    fun updateProfile(token : String, profileImg : MultipartBody.Part, userName : RequestBody, completion:(RESPONSE_STATE, UpdateResponse)-> Unit){
+    fun updateProfile(token : String, profileImg : MultipartBody.Part?, userName : RequestBody, completion:(RESPONSE_STATE, UpdateResponse)-> Unit){
         Log.d("updateProfile", "$userInterface")
         val call = userInterface?.updateUserInfo("Bearer $token", profileImg, userName) ?:return
         Log.d("token",token)
-        Log.d("profileImg","${profileImg.body}")
+        Log.d("profileImg","$profileImg")
         Log.d("userName","$userName")
         call.enqueue(object : retrofit2.Callback<UpdateResponse>{
             override fun onResponse(call: Call<UpdateResponse>, response: Response<UpdateResponse>) {
