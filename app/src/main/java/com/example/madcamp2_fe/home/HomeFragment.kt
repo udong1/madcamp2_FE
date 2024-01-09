@@ -49,6 +49,7 @@ import com.kakao.vectormap.label.LabelManager
 import com.kakao.vectormap.label.LabelOptions
 import com.kakao.vectormap.label.LabelStyle
 import com.kakao.vectormap.label.LabelStyles
+import com.kakao.vectormap.route.RouteLineManager
 import com.kakao.vectormap.shape.ShapeManager
 import java.lang.Exception
 
@@ -64,6 +65,7 @@ class HomeFragment : Fragment() {
     private lateinit var kakaoMap : KakaoMap
     private var shapeManager : ShapeManager? = null
     private var labelManager : LabelManager? = null
+    private var routeLineManager : RouteLineManager? = null
 
 
 
@@ -125,6 +127,7 @@ class HomeFragment : Fragment() {
                 getLocation()
                 shapeManager = kakaoMap.shapeManager
                 labelManager = kakaoMap.labelManager
+                routeLineManager = kakaoMap.routeLineManager
 //                kakaoMap.setGestureEnable(GestureType.OneFingerDoubleTap, false)
 //                kakaoMap.setGestureEnable(GestureType.TwoFingerSingleTap, false)
 //                kakaoMap.setGestureEnable(GestureType.Zoom, false)
@@ -154,9 +157,10 @@ class HomeFragment : Fragment() {
             binding.startButton.visibility = View.GONE
             binding.menu.visibility = View.VISIBLE
             val currentMarker = labelManager!!.addLabelStyles(
-                LabelStyles.from("currentMarker", LabelStyle.from(R.drawable.play))
+                LabelStyles.from("currentMarker", LabelStyle.from(R.drawable.anchor_point2).setZoomLevel(0))
             )
             labelManager!!.layer!!.addLabel(LabelOptions.from("label", LatLng.from(lat, lon)).setStyles(currentMarker))
+
         }
 
 
