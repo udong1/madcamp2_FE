@@ -6,12 +6,12 @@ import android.content.Context
 import android.content.Context.LOCATION_SERVICE
 import android.content.pm.PackageManager
 import android.graphics.Color
-import android.location.Criteria
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
-import android.location.LocationRequest
+import android.os.Build
 import android.os.Bundle
+import android.os.Looper
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -20,8 +20,10 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.getSystemService
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
@@ -33,28 +35,21 @@ import com.example.madcamp2_fe.WalkActivity
 import com.example.madcamp2_fe.WalkViewModel
 import com.example.madcamp2_fe.databinding.FragmentHomeBinding
 import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
-import com.google.android.gms.location.Priority
-import com.google.android.gms.tasks.CancellationToken
-import com.google.android.gms.tasks.CancellationTokenSource
-import com.google.android.gms.tasks.OnTokenCanceledListener
-import com.kakao.vectormap.GestureType
 import com.kakao.vectormap.KakaoMap
 import com.kakao.vectormap.KakaoMapReadyCallback
 import com.kakao.vectormap.LatLng
 import com.kakao.vectormap.MapLifeCycleCallback
-import com.kakao.vectormap.MapView
 import com.kakao.vectormap.camera.CameraUpdateFactory
 import com.kakao.vectormap.label.LabelManager
 import com.kakao.vectormap.label.LabelOptions
 import com.kakao.vectormap.label.LabelStyle
 import com.kakao.vectormap.label.LabelStyles
-import com.kakao.vectormap.shape.DotPoints
-import com.kakao.vectormap.shape.PolygonOptions
 import com.kakao.vectormap.shape.ShapeManager
 import java.lang.Exception
-import java.util.Timer
-import kotlin.concurrent.timer
 
 
 class HomeFragment : Fragment() {
@@ -62,6 +57,7 @@ class HomeFragment : Fragment() {
     private var _binding : FragmentHomeBinding? = null
     private lateinit var walkViewModel : WalkViewModel
     private lateinit var fusedLocationClient : FusedLocationProviderClient
+    private lateinit var locationCallback : LocationCallback
     private var lon : Double = 999.0
     private var lat : Double = 999.0
     private lateinit var kakaoMap : KakaoMap
@@ -73,12 +69,9 @@ class HomeFragment : Fragment() {
     private var time3 : Int = 0
 
 
+
     private val binding get() = _binding!!
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
-        Log.d("called location client","success")
-    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -96,6 +89,19 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+        locationCallback = object : LocationCallback(){
+            override fun onLocationResult(p0: LocationResult) {
+                super.onLocationResult(p0)
+                for(location in p0.locations){
+                    Log.d("location","$location")
+                    walkViewModel.addLocation(location)
+                }
+            }
+        }
+        Log.d("called location client","success")
+
 
         walkViewModel.getProfileChanged().observe(requireActivity(), Observer {
             if (it){
@@ -159,8 +165,11 @@ class HomeFragment : Fragment() {
             binding.start.visibility = View.GONE
             binding.terminate.visibility = View.VISIBLE
             binding.terminate.isEnabled = true
+            walkViewModel.setWalkStartTime()
+            Log.d("walkStartTime",walkViewModel.getWalkStartTime())
             walkViewModel.stopwatch.start()
             Log.d("stopwatch start","start button touched")
+            requestLocationUpdates()
         }
 
         binding.terminate.setOnClickListener {
@@ -169,6 +178,7 @@ class HomeFragment : Fragment() {
             binding.terminate.visibility = View.GONE
             walkViewModel.pauseStopwatch()
             Log.d("stopwatch stop","terminate button touched")
+            fusedLocationClient.removeLocationUpdates(locationCallback)
         }
 
         walkViewModel.getTime().observe(requireActivity(), Observer {
@@ -188,6 +198,14 @@ class HomeFragment : Fragment() {
 
     }
 
+    @SuppressLint("MissingPermission")
+    private fun requestLocationUpdates(){
+        val locationRequest = LocationRequest.create()
+            .setInterval(5000)
+            .setFastestInterval(3000)
+            .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+        fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback,Looper.myLooper() )
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -197,7 +215,7 @@ class HomeFragment : Fragment() {
     @SuppressLint("MissingPermission")
     fun getLocation(){
         fusedLocationClient.lastLocation
-            .addOnSuccessListener { location:Location? ->
+            .addOnSuccessListener { location: Location? ->
                 if(location == null){
                     Log.d("location", "Location is null")
                 }

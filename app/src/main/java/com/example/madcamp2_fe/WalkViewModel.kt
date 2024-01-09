@@ -14,6 +14,7 @@ import androidx.core.app.ActivityCompat
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.madcamp2_fe.home.LocationData
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
@@ -24,6 +25,8 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.yield
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class WalkViewModel : ViewModel() {
     private lateinit var userNickname : String
@@ -37,6 +40,9 @@ class WalkViewModel : ViewModel() {
     private val time : MutableLiveData<Int> = MutableLiveData(0)
     private var oldTimeMills : Long = 0
     private var isRunning = true
+    private val locationTracker = arrayListOf<Location>()
+    private var distanceTracker:Float = 0f
+    private lateinit var walkStartTime : String
 
 
     val stopwatch : Job = viewModelScope.launch(start = CoroutineStart.LAZY){
@@ -107,6 +113,22 @@ class WalkViewModel : ViewModel() {
     }
     fun setProfileChanged(bool:Boolean){
         profileChanged.value = bool
+    }
+
+    fun addLocation(location:Location){
+        if(locationTracker.isNotEmpty()){
+            distanceTracker += locationTracker.last().distanceTo(location)
+        }
+        locationTracker.add(location)
+        Log.d("distance", distanceTracker.toString())
+    }
+    fun setWalkStartTime(){
+        val currentDateTime = LocalDateTime.now()
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
+        walkStartTime = currentDateTime.format(formatter)
+    }
+    fun getWalkStartTime():String{
+        return walkStartTime
     }
 
 
