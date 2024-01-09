@@ -1,38 +1,20 @@
 package com.example.madcamp2_fe.home
 
-import android.Manifest
 import android.annotation.SuppressLint
-import android.content.Context
-import android.content.Context.LOCATION_SERVICE
-import android.content.pm.PackageManager
 import android.graphics.Color
 import android.location.Location
-import android.location.LocationListener
-import android.location.LocationManager
-import android.os.Build
 import android.os.Bundle
 import android.os.Looper
 import android.os.SystemClock
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import androidx.core.content.getSystemService
-import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.MutableLiveData
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.example.madcamp2_fe.R
-import com.example.madcamp2_fe.WalkActivity
 import com.example.madcamp2_fe.WalkViewModel
 import com.example.madcamp2_fe.databinding.FragmentHomeBinding
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -45,13 +27,20 @@ import com.kakao.vectormap.KakaoMapReadyCallback
 import com.kakao.vectormap.LatLng
 import com.kakao.vectormap.MapLifeCycleCallback
 import com.kakao.vectormap.camera.CameraUpdateFactory
+import com.kakao.vectormap.label.Label
+import com.kakao.vectormap.label.LabelLayer
 import com.kakao.vectormap.label.LabelManager
 import com.kakao.vectormap.label.LabelOptions
 import com.kakao.vectormap.label.LabelStyle
 import com.kakao.vectormap.label.LabelStyles
+import com.kakao.vectormap.route.RouteLineLayer
 import com.kakao.vectormap.route.RouteLineManager
+import com.kakao.vectormap.route.RouteLineOptions
+import com.kakao.vectormap.route.RouteLineSegment
+import com.kakao.vectormap.route.RouteLineStyle
+import com.kakao.vectormap.route.RouteLineStyles
+import com.kakao.vectormap.route.RouteLineStylesSet
 import com.kakao.vectormap.shape.ShapeManager
-import java.lang.Exception
 
 
 class HomeFragment : Fragment() {
@@ -66,6 +55,10 @@ class HomeFragment : Fragment() {
     private var shapeManager : ShapeManager? = null
     private var labelManager : LabelManager? = null
     private var routeLineManager : RouteLineManager? = null
+    private lateinit var labelLayer : LabelLayer
+    private lateinit var routeLayer : RouteLineLayer
+    private lateinit var routeLineStyleSet : RouteLineStylesSet
+    private lateinit var movingLabel : Label
 
 
 
@@ -95,7 +88,10 @@ class HomeFragment : Fragment() {
                 super.onLocationResult(p0)
                 for(location in p0.locations){
                     Log.d("location","$location")
+
                     walkViewModel.addLocation(location)
+                    addRouteOnMap()
+                    moveLabel(location)
                 }
             }
         }
@@ -127,7 +123,14 @@ class HomeFragment : Fragment() {
                 getLocation()
                 shapeManager = kakaoMap.shapeManager
                 labelManager = kakaoMap.labelManager
+                labelLayer = labelManager!!.layer!!
+
                 routeLineManager = kakaoMap.routeLineManager
+                routeLayer = routeLineManager!!.layer
+                routeLineStyleSet = RouteLineStylesSet.from(
+                    RouteLineStyles.from(
+                        RouteLineStyle.from(20f,Color.parseColor("#f2d83c"), 0f, 0).setZoomLevel(5)))
+
 //                kakaoMap.setGestureEnable(GestureType.OneFingerDoubleTap, false)
 //                kakaoMap.setGestureEnable(GestureType.TwoFingerSingleTap, false)
 //                kakaoMap.setGestureEnable(GestureType.Zoom, false)
@@ -156,10 +159,10 @@ class HomeFragment : Fragment() {
             binding.upperProfile.visibility = View.GONE
             binding.startButton.visibility = View.GONE
             binding.menu.visibility = View.VISIBLE
-            val currentMarker = labelManager!!.addLabelStyles(
-                LabelStyles.from("currentMarker", LabelStyle.from(R.drawable.anchor_point2).setZoomLevel(0))
+            val marker = labelManager!!.addLabelStyles(
+                LabelStyles.from("currentMarker", LabelStyle.from(R.drawable.anchor_point2))
             )
-            labelManager!!.layer!!.addLabel(LabelOptions.from("label", LatLng.from(lat, lon)).setStyles(currentMarker))
+            movingLabel = labelLayer.addLabel(LabelOptions.from("label", LatLng.from(lat, lon)).setStyles(marker))
 
         }
 
@@ -186,9 +189,7 @@ class HomeFragment : Fragment() {
             //산책 종료
             walkViewModel.setWalkTerminateTime()
             fusedLocationClient.removeLocationUpdates(locationCallback)
-
             binding.timer.stop()
-
             binding.terminate.visibility = View.GONE
 
             Log.d("walkStartTime",walkViewModel.getWalkTerminateTime())
@@ -204,6 +205,18 @@ class HomeFragment : Fragment() {
             .setFastestInterval(3000)
             .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
         fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback,Looper.myLooper() )
+    }
+    private fun addRouteOnMap(){
+        val segment = RouteLineSegment.from(listOf(
+            LatLng.from(walkViewModel.getSecondLastLocation().latitude, walkViewModel.getSecondLastLocation().longitude),
+            LatLng.from(walkViewModel.getLastLocation().latitude, walkViewModel.getLastLocation().longitude)
+        )).setStyles(routeLineStyleSet.getStyles(0))
+        val options = RouteLineOptions.from(segment).setStylesSet(routeLineStyleSet)
+        routeLayer.addRouteLine(options)
+    }
+
+    private fun moveLabel(location : Location){
+        movingLabel.moveTo(LatLng.from(location.latitude, location.longitude), 800)
     }
 
     override fun onDestroyView() {

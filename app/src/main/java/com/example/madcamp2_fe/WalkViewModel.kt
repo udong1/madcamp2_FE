@@ -84,6 +84,20 @@ class WalkViewModel : ViewModel() {
     fun getDistanceTracker():MutableLiveData<Float>{
         return distanceTracker
     }
+    fun getDuration():String{
+        duration = Duration.between(walkStartTime, walkTerminateTime).seconds.toString()
+        return duration
+    }
+    fun getLastLocation():Location{
+        return locationTracker.last()
+    }
+    fun getSecondLastLocation():Location{
+        return if(locationTracker.size >= 2){
+            locationTracker[locationTracker.size -2]
+        } else{
+            locationTracker.first()
+        }
+    }
     fun setLon(longitude : Double){
         lon.value = longitude
     }
@@ -120,10 +134,7 @@ class WalkViewModel : ViewModel() {
     fun setWalkTerminateTime(){
         walkTerminateTime = LocalDateTime.now()
     }
-    fun getDuration():String{
-        duration = Duration.between(walkStartTime, walkTerminateTime).seconds.toString()
-        return duration
-    }
+
 
 
 
