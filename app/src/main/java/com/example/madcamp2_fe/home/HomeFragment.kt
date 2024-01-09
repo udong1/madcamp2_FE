@@ -164,7 +164,7 @@ class HomeFragment : Fragment() {
             binding.startButton.visibility = View.GONE
             binding.menu.visibility = View.VISIBLE
             val marker = labelManager!!.addLabelStyles(
-                LabelStyles.from("currentMarker", LabelStyle.from(R.drawable.marker))
+                LabelStyles.from("currentMarker", LabelStyle.from(R.drawable.marker2).setAnchorPoint(0.5f, 0.5f))
             )
             movingLabel = labelLayer.addLabel(LabelOptions.from("label", LatLng.from(lat, lon)).setStyles(marker))
         }
@@ -198,16 +198,16 @@ class HomeFragment : Fragment() {
             Log.d("walkStartTime",walkViewModel.getWalkTerminateTime().toString())
             Log.d("stopwatch stop","terminate button touched, Duration : ${walkViewModel.getDuration()}")
             val locationList = walkViewModel.getLocationTracker()
-            val convertedLocationList = arrayListOf<LocationData>()
-            locationList.forEachIndexed { index, location ->
-                convertedLocationList.add(LocationData(location.latitude, location.longitude, index.toLong()))
+            val convertedLocationList:List<LocationData> = locationList.mapIndexed{ index, location ->
+                LocationData(location.latitude, location.longitude, index.toLong())
             }
 
             val walk = Walk(
-                locationList = convertedLocationList,
-                startDateTime = walkViewModel.getWalkStartTime(),
-                walkTime = walkViewModel.getDuration().toLong(),
-                distance = walkViewModel.getDistanceTracker().value!!.toDouble())
+                locList = listOf(LocationData(1.1,1.1,1L),LocationData(1.2,1.2,1L)),
+                walkStartDateTime = walkViewModel.getWalkStartTime().toString(),
+                walkingTime = walkViewModel.getDuration().toLong(),
+                distance = walkViewModel.getDistanceTracker().value!!.toDouble()
+            )
 
 
             UserClientManager.instance.updateWalk(

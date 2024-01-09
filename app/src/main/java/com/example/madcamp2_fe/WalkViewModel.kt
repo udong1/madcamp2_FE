@@ -40,7 +40,7 @@ class WalkViewModel : ViewModel() {
     private var profileChanged : MutableLiveData<Boolean> = MutableLiveData(false)
     private var lon : MutableLiveData<Double> = MutableLiveData()
     private var lat : MutableLiveData<Double> = MutableLiveData()
-    private val locationTracker = arrayListOf<Location>()
+    private val locationTracker = mutableListOf<Location>()
     private var distanceTracker : MutableLiveData<Double> = MutableLiveData(0.0)
     private lateinit var walkStartTime : LocalDateTime
     private lateinit var walkTerminateTime : LocalDateTime
@@ -94,7 +94,7 @@ class WalkViewModel : ViewModel() {
             locationTracker.first()
         }
     }
-    fun getLocationTracker(): ArrayList<Location>{
+    fun getLocationTracker(): MutableList<Location>{
         return locationTracker
     }
     fun setLon(longitude : Double){
