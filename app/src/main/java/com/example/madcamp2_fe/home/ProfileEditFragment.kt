@@ -77,10 +77,11 @@ class ProfileEditFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         var nameEdit : String = walkViewModel.getUserName()
 
-        Glide.with(this)
-            .load(walkViewModel.getUserProfileImg())
-            .into(binding.profile)
-
+        if(walkViewModel.getUserProfileImg()!="default"){
+            Glide.with(this)
+                .load(walkViewModel.getUserProfileImg())
+                .into(binding.profile)
+        }
 
         binding.nicknameEdit.text = Editable.Factory.getInstance().newEditable(walkViewModel.getUserName())
         binding.emailEdit.text = walkViewModel.getUserEmail()
@@ -103,7 +104,13 @@ class ProfileEditFragment : Fragment() {
                             RESPONSE_STATE.OKAY ->{
                                 Log.d(Constants.TAG, "업데이트 성공 : $responseBody")
                                 walkViewModel.changeUserName(responseBody.updatedNickname)
-                                walkViewModel.setUserProfile(responseBody.updatedProfileImg)
+                                if(responseBody.updatedProfileImg == null){
+                                    walkViewModel.setUserProfile(Uri.parse("file:///android_asset/default_image.png").toString())
+                                    Log.d("default IMG", walkViewModel.getUserProfileImg())
+                                }
+                                else{
+                                    walkViewModel.setUserProfile(responseBody.updatedProfileImg!!)
+                                }
                                 walkViewModel.setProfileChanged(true)
                             }
                             RESPONSE_STATE.FAIL ->{
@@ -124,7 +131,6 @@ class ProfileEditFragment : Fragment() {
                             RESPONSE_STATE.OKAY ->{
                                 Log.d(Constants.TAG, "업데이트 성공 : $responseBody")
                                 walkViewModel.changeUserName(responseBody.updatedNickname)
-                                walkViewModel.setUserProfile(responseBody.updatedProfileImg)
                                 walkViewModel.setProfileChanged(true)
                             }
                             RESPONSE_STATE.FAIL ->{

@@ -4,5 +4,5 @@ import com.google.gson.annotations.SerializedName
 
 data class UpdateResponse(
     @SerializedName("nickname") var updatedNickname : String,
-    @SerializedName("profile_img_url") var updatedProfileImg : String
+    @SerializedName("profile_img_url") var updatedProfileImg : String?
 )

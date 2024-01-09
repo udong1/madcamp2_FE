@@ -74,11 +74,11 @@ class HomeFragment : Fragment() {
         // Inflate the layout for this fragment
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         walkViewModel = ViewModelProvider(requireActivity()).get(WalkViewModel::class.java)
-        Glide.with(this)
-            .load(walkViewModel.getUserProfileImg())
-            .into(binding.profile)
-        Log.d("Glide 오류","${walkViewModel.getUserProfileImg()}")
-
+        if(walkViewModel.getUserProfileImg()!="default"){
+            Glide.with(this)
+                .load(walkViewModel.getUserProfileImg())
+                .into(binding.profile)
+        }
         binding.homeName.text=walkViewModel.getUserName()
         return binding.root
     }
@@ -94,8 +94,9 @@ class HomeFragment : Fragment() {
                     Log.d("location","$location")
 
                     walkViewModel.addLocation(location)
-                    addRouteOnMap()
                     moveLabel(location)
+                    addRouteOnMap()
+
                 }
             }
         }
@@ -203,7 +204,7 @@ class HomeFragment : Fragment() {
             }
 
             val walk = Walk(
-                locList = listOf(LocationData(1.1,1.1,1L),LocationData(1.2,1.2,1L)),
+                locList = convertedLocationList,
                 walkStartDateTime = walkViewModel.getWalkStartTime().toString(),
                 walkingTime = walkViewModel.getDuration().toLong(),
                 distance = walkViewModel.getDistanceTracker().value!!.toDouble()
@@ -246,7 +247,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun moveLabel(location : Location){
-        movingLabel.moveTo(LatLng.from(location.latitude, location.longitude), 800)
+        movingLabel.moveTo(LatLng.from(location.latitude, location.longitude), 500)
     }
 
     override fun onDestroyView() {

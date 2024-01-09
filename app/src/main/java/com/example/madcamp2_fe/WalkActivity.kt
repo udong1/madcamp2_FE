@@ -37,15 +37,11 @@ class WalkActivity : AppCompatActivity() {
         val userEmail = intent.getStringExtra("email")
         val userAccessToken = intent.getStringExtra("accessToken")
         val userIsRegistered = intent.getBooleanExtra("isRegistered", false)
-        val userProfileImg = intent.getStringExtra("profileImg")
+        var userProfileImg = intent.getStringExtra("profileImg")
 
         walkViewModel.setUserInfo(userNickname!!,userEmail!!, userAccessToken!!, userIsRegistered)
         if (userProfileImg == null){
-            val assetImagePath = "images/default_profile.png"
-            val assetUri:Uri = Uri.parse("file:///android_asset/$assetImagePath")
-            val assetUriString:String = assetUri.toString()
-            walkViewModel.setUserProfile(assetUriString)
-            Log.d("assetUriString", assetUriString)
+            walkViewModel.setUserProfile("default")
         }
         else{
             walkViewModel.setUserProfile(userProfileImg)
