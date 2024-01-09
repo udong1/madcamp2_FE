@@ -25,6 +25,8 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.yield
+import java.time.Duration
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -41,30 +43,11 @@ class WalkViewModel : ViewModel() {
     private var oldTimeMills : Long = 0
     private var isRunning = true
     private val locationTracker = arrayListOf<Location>()
-    private var distanceTracker:Float = 0f
-    private lateinit var walkStartTime : String
+    private var distanceTracker : MutableLiveData<Float> = MutableLiveData(0f)
+    private lateinit var walkStartTime : LocalDateTime
+    private lateinit var walkTerminateTime : LocalDateTime
+    private lateinit var duration : String
 
-
-    val stopwatch : Job = viewModelScope.launch(start = CoroutineStart.LAZY){
-        withContext(Dispatchers.IO){
-            oldTimeMills = System.currentTimeMillis()
-            while(true){
-                if(isRunning){
-                    val delayMills = System.currentTimeMillis() - oldTimeMills
-                    if(delayMills == 1000L){
-                        time.postValue(time.value!!+1)
-                        oldTimeMills = System.currentTimeMillis()
-                        Log.d("start",time.value.toString())
-                    }
-                }
-                yield()
-            }
-        }
-    }
-    fun pauseStopwatch(){
-        isRunning = false
-        stopwatch.cancel()
-    }
 
     fun getUserName():String{
         return userNickname
@@ -90,8 +73,16 @@ class WalkViewModel : ViewModel() {
     fun getProfileChanged():MutableLiveData<Boolean>{
         return profileChanged
     }
-    fun getTime():MutableLiveData<Int>{
-        return time
+    fun getWalkStartTime():String{
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
+        return walkStartTime.format(formatter)
+    }
+    fun getWalkTerminateTime():String{
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
+        return walkTerminateTime.format(formatter)
+    }
+    fun getDistanceTracker():MutableLiveData<Float>{
+        return distanceTracker
     }
     fun setLon(longitude : Double){
         lon.value = longitude
@@ -117,19 +108,23 @@ class WalkViewModel : ViewModel() {
 
     fun addLocation(location:Location){
         if(locationTracker.isNotEmpty()){
-            distanceTracker += locationTracker.last().distanceTo(location)
+            distanceTracker.value = distanceTracker.value!! + locationTracker.last().distanceTo(location)
         }
         locationTracker.add(location)
-        Log.d("distance", distanceTracker.toString())
+        Log.d("distance", distanceTracker.value.toString())
     }
     fun setWalkStartTime(){
-        val currentDateTime = LocalDateTime.now()
-        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
-        walkStartTime = currentDateTime.format(formatter)
+        walkStartTime = LocalDateTime.now()
+
     }
-    fun getWalkStartTime():String{
-        return walkStartTime
+    fun setWalkTerminateTime(){
+        walkTerminateTime = LocalDateTime.now()
     }
+    fun getDuration():String{
+        duration = Duration.between(walkStartTime, walkTerminateTime).seconds.toString()
+        return duration
+    }
+
 
 
 

@@ -12,6 +12,7 @@ import android.location.LocationManager
 import android.os.Build
 import android.os.Bundle
 import android.os.Looper
+import android.os.SystemClock
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -63,10 +64,6 @@ class HomeFragment : Fragment() {
     private lateinit var kakaoMap : KakaoMap
     private var shapeManager : ShapeManager? = null
     private var labelManager : LabelManager? = null
-    private var time0 : Int = 0
-    private var time1 : Int = 0
-    private var time2 : Int = 0
-    private var time3 : Int = 0
 
 
 
@@ -111,6 +108,10 @@ class HomeFragment : Fragment() {
                 binding.homeName.text=walkViewModel.getUserName()
                 walkViewModel.setProfileChanged(false)
             }
+        })
+        walkViewModel.getDistanceTracker().observe(requireActivity(), Observer{
+            val distanceKm = walkViewModel.getDistanceTracker().value!!/1000
+            binding.distanceRepresentation.text = String.format("%.2f km",distanceKm)
         })
         binding.mapView.start(object : MapLifeCycleCallback() {
             override fun onMapDestroy() {
@@ -162,39 +163,33 @@ class HomeFragment : Fragment() {
         binding.terminate.isEnabled = false
         binding.terminate.visibility = View.INVISIBLE
         binding.start.setOnClickListener{
+            binding.timer.base = SystemClock.elapsedRealtime()
+            binding.timer.start()
+
             binding.start.visibility = View.GONE
             binding.terminate.visibility = View.VISIBLE
             binding.terminate.isEnabled = true
+
             walkViewModel.setWalkStartTime()
             Log.d("walkStartTime",walkViewModel.getWalkStartTime())
-            walkViewModel.stopwatch.start()
+//            walkViewModel.stopwatch.start()
             Log.d("stopwatch start","start button touched")
+
             requestLocationUpdates()
         }
 
         binding.terminate.setOnClickListener {
             //산책 종료
+            walkViewModel.setWalkTerminateTime()
+            fusedLocationClient.removeLocationUpdates(locationCallback)
+
+            binding.timer.stop()
 
             binding.terminate.visibility = View.GONE
-            walkViewModel.pauseStopwatch()
-            Log.d("stopwatch stop","terminate button touched")
-            fusedLocationClient.removeLocationUpdates(locationCallback)
-        }
 
-        walkViewModel.getTime().observe(requireActivity(), Observer {
-            var timeCounter = walkViewModel.getTime().value!!
-            time0 = timeCounter / 600
-            timeCounter %= 600
-            time1 = timeCounter / 60
-            timeCounter %= 60
-            time2 = timeCounter / 10
-            timeCounter %= 10
-            time3 = timeCounter
-            binding.time0.text = time0.toString()
-            binding.time1.text = time1.toString()
-            binding.time2.text = time2.toString()
-            binding.time3.text = time3.toString()
-        })
+            Log.d("walkStartTime",walkViewModel.getWalkTerminateTime())
+            Log.d("stopwatch stop","terminate button touched, Duration : ${walkViewModel.getDuration()}")
+        }
 
     }
 
