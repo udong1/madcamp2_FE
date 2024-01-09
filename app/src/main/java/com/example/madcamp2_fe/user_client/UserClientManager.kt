@@ -1,6 +1,7 @@
 package com.example.madcamp2_fe.user_client
 
 import android.util.Log
+import com.example.madcamp2_fe.home.Walk
 import com.example.madcamp2_fe.login.LoginRequest
 import com.example.madcamp2_fe.login.LoginResponse
 import com.example.madcamp2_fe.profile_update.UpdateResponse
@@ -70,5 +71,30 @@ class UserClientManager {
         })
     }
 
+
+    fun updateWalk(token : String, walk : Walk, completion:(RESPONSE_STATE)-> Unit){
+        Log.d("updateWalk", "$userInterface")
+        val call = userInterface?.updateWalk("Bearer $token", walk) ?:return
+        Log.d("distance","${walk.distance}")
+        call.enqueue(object : retrofit2.Callback<Void>{
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                Log.d("response.isSuccessful", "${response.isSuccessful}")
+                if (response.isSuccessful){
+                    Log.d(Constants.TAG, "산책 업데이트 응답 성공")
+                    completion(RESPONSE_STATE.OKAY)
+                }
+                else{
+                    Log.d(Constants.TAG, "산책 업데이트 응답 실패")
+                    Log.d(Constants.TAG, "${response.errorBody()?.string()}")
+                    completion(RESPONSE_STATE.FAIL)
+                }
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                Log.d(Constants.TAG, "프로필 업데이트 응답 실패 on Failure")
+                completion(RESPONSE_STATE.FAIL)
+            }
+        })
+    }
 
 }

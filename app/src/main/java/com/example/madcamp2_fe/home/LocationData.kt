@@ -1,3 +1,9 @@
 package com.example.madcamp2_fe.home
 
-data class LocationData(val lat:Double, val lon:Double)
+import com.google.gson.annotations.SerializedName
+
+data class LocationData(
+    @SerializedName("latitude") val lat:Double,
+    @SerializedName("longitude") val lon:Double,
+    @SerializedName("recordOrder") val order:Long
+)

@@ -1,5 +1,6 @@
 package com.example.madcamp2_fe.user_client
 
+import com.example.madcamp2_fe.home.Walk
 import com.example.madcamp2_fe.login.LoginRequest
 import com.example.madcamp2_fe.login.LoginResponse
 import com.example.madcamp2_fe.profile_update.UpdateResponse
@@ -26,7 +27,10 @@ interface UserInterface {
         @Part("nickname") userName: RequestBody
     ) : Call<UpdateResponse>
 
-
-
+    @POST(API.WALK)
+    fun updateWalk(
+        @Header("Authorization") authorization:String,
+        @Body walk : Walk
+    ) : Call<Void>
 
 }

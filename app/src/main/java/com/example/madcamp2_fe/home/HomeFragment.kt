@@ -17,6 +17,8 @@ import com.bumptech.glide.Glide
 import com.example.madcamp2_fe.R
 import com.example.madcamp2_fe.WalkViewModel
 import com.example.madcamp2_fe.databinding.FragmentHomeBinding
+import com.example.madcamp2_fe.user_client.UserClientManager
+import com.example.madcamp2_fe.utils.RESPONSE_STATE
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -75,6 +77,8 @@ class HomeFragment : Fragment() {
         Glide.with(this)
             .load(walkViewModel.getUserProfileImg())
             .into(binding.profile)
+        Log.d("Glide 오류","${walkViewModel.getUserProfileImg()}")
+
         binding.homeName.text=walkViewModel.getUserName()
         return binding.root
     }
@@ -160,10 +164,9 @@ class HomeFragment : Fragment() {
             binding.startButton.visibility = View.GONE
             binding.menu.visibility = View.VISIBLE
             val marker = labelManager!!.addLabelStyles(
-                LabelStyles.from("currentMarker", LabelStyle.from(R.drawable.anchor_point2))
+                LabelStyles.from("currentMarker", LabelStyle.from(R.drawable.marker))
             )
             movingLabel = labelLayer.addLabel(LabelOptions.from("label", LatLng.from(lat, lon)).setStyles(marker))
-
         }
 
 
@@ -178,7 +181,7 @@ class HomeFragment : Fragment() {
             binding.terminate.isEnabled = true
 
             walkViewModel.setWalkStartTime()
-            Log.d("walkStartTime",walkViewModel.getWalkStartTime())
+            Log.d("walkStartTime",walkViewModel.getWalkStartTime().toString())
 //            walkViewModel.stopwatch.start()
             Log.d("stopwatch start","start button touched")
 
@@ -192,8 +195,35 @@ class HomeFragment : Fragment() {
             binding.timer.stop()
             binding.terminate.visibility = View.GONE
 
-            Log.d("walkStartTime",walkViewModel.getWalkTerminateTime())
+            Log.d("walkStartTime",walkViewModel.getWalkTerminateTime().toString())
             Log.d("stopwatch stop","terminate button touched, Duration : ${walkViewModel.getDuration()}")
+            val locationList = walkViewModel.getLocationTracker()
+            val convertedLocationList = arrayListOf<LocationData>()
+            locationList.forEachIndexed { index, location ->
+                convertedLocationList.add(LocationData(location.latitude, location.longitude, index.toLong()))
+            }
+
+            val walk = Walk(
+                locationList = convertedLocationList,
+                startDateTime = walkViewModel.getWalkStartTime(),
+                walkTime = walkViewModel.getDuration().toLong(),
+                distance = walkViewModel.getDistanceTracker().value!!.toDouble())
+
+
+            UserClientManager.instance.updateWalk(
+                token = walkViewModel.getUserAccessToken(),
+                walk = walk,
+                completion = {
+                responseState ->
+                when(responseState){
+                    RESPONSE_STATE.OKAY -> {
+                        Log.d("업데이트 성공", "산책 업데이트 성공")
+                    }
+                    RESPONSE_STATE.FAIL ->{
+                        Log.d("업데이트 실패", "산책 업데이트 실패")
+                    }
+                }
+            })
         }
 
     }

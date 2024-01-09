@@ -29,6 +29,7 @@ import java.time.Duration
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import java.util.ArrayList
 
 class WalkViewModel : ViewModel() {
     private lateinit var userNickname : String
@@ -39,11 +40,8 @@ class WalkViewModel : ViewModel() {
     private var profileChanged : MutableLiveData<Boolean> = MutableLiveData(false)
     private var lon : MutableLiveData<Double> = MutableLiveData()
     private var lat : MutableLiveData<Double> = MutableLiveData()
-    private val time : MutableLiveData<Int> = MutableLiveData(0)
-    private var oldTimeMills : Long = 0
-    private var isRunning = true
     private val locationTracker = arrayListOf<Location>()
-    private var distanceTracker : MutableLiveData<Float> = MutableLiveData(0f)
+    private var distanceTracker : MutableLiveData<Double> = MutableLiveData(0.0)
     private lateinit var walkStartTime : LocalDateTime
     private lateinit var walkTerminateTime : LocalDateTime
     private lateinit var duration : String
@@ -73,15 +71,13 @@ class WalkViewModel : ViewModel() {
     fun getProfileChanged():MutableLiveData<Boolean>{
         return profileChanged
     }
-    fun getWalkStartTime():String{
-        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
-        return walkStartTime.format(formatter)
+    fun getWalkStartTime():LocalDateTime{
+        return walkStartTime
     }
-    fun getWalkTerminateTime():String{
-        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
-        return walkTerminateTime.format(formatter)
+    fun getWalkTerminateTime():LocalDateTime{
+        return walkTerminateTime
     }
-    fun getDistanceTracker():MutableLiveData<Float>{
+    fun getDistanceTracker():MutableLiveData<Double>{
         return distanceTracker
     }
     fun getDuration():String{
@@ -97,6 +93,9 @@ class WalkViewModel : ViewModel() {
         } else{
             locationTracker.first()
         }
+    }
+    fun getLocationTracker(): ArrayList<Location>{
+        return locationTracker
     }
     fun setLon(longitude : Double){
         lon.value = longitude
@@ -122,7 +121,7 @@ class WalkViewModel : ViewModel() {
 
     fun addLocation(location:Location){
         if(locationTracker.isNotEmpty()){
-            distanceTracker.value = distanceTracker.value!! + locationTracker.last().distanceTo(location)
+            distanceTracker.value = distanceTracker.value!! + locationTracker.last().distanceTo(location).toDouble()
         }
         locationTracker.add(location)
         Log.d("distance", distanceTracker.value.toString())
@@ -134,6 +133,7 @@ class WalkViewModel : ViewModel() {
     fun setWalkTerminateTime(){
         walkTerminateTime = LocalDateTime.now()
     }
+
 
 
 

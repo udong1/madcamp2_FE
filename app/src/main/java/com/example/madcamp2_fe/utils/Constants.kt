@@ -14,4 +14,6 @@ object API{
     const val LOGIN : String = "oauth/authenticate/kakao/token/v1"
 
     const val UPDATE : String = "user/modify/v1"
+
+    const val WALK : String = "walkingRecord/save/v1"
 }
