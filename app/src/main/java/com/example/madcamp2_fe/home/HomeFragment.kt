@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Context.LOCATION_SERVICE
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.location.Criteria
 import android.location.Location
 import android.location.LocationListener
@@ -44,7 +45,16 @@ import com.kakao.vectormap.LatLng
 import com.kakao.vectormap.MapLifeCycleCallback
 import com.kakao.vectormap.MapView
 import com.kakao.vectormap.camera.CameraUpdateFactory
+import com.kakao.vectormap.label.LabelManager
+import com.kakao.vectormap.label.LabelOptions
+import com.kakao.vectormap.label.LabelStyle
+import com.kakao.vectormap.label.LabelStyles
+import com.kakao.vectormap.shape.DotPoints
+import com.kakao.vectormap.shape.PolygonOptions
+import com.kakao.vectormap.shape.ShapeManager
 import java.lang.Exception
+import java.util.Timer
+import kotlin.concurrent.timer
 
 
 class HomeFragment : Fragment() {
@@ -55,6 +65,13 @@ class HomeFragment : Fragment() {
     private var lon : Double = 999.0
     private var lat : Double = 999.0
     private lateinit var kakaoMap : KakaoMap
+    private var shapeManager : ShapeManager? = null
+    private var labelManager : LabelManager? = null
+    private var time0 : Int = 0
+    private var time1 : Int = 0
+    private var time2 : Int = 0
+    private var time3 : Int = 0
+
 
     private val binding get() = _binding!!
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -99,6 +116,8 @@ class HomeFragment : Fragment() {
             override fun onMapReady(map: KakaoMap) {
                 kakaoMap = map
                 getLocation()
+                shapeManager = kakaoMap.shapeManager
+                labelManager = kakaoMap.labelManager
 //                kakaoMap.setGestureEnable(GestureType.OneFingerDoubleTap, false)
 //                kakaoMap.setGestureEnable(GestureType.TwoFingerSingleTap, false)
 //                kakaoMap.setGestureEnable(GestureType.Zoom, false)
@@ -127,16 +146,46 @@ class HomeFragment : Fragment() {
             binding.upperProfile.visibility = View.GONE
             binding.startButton.visibility = View.GONE
             binding.menu.visibility = View.VISIBLE
-
-            binding.stop.setOnClickListener {
-                //location listener 정지
-            }
-//            binding.terminate.setOnLongClickListener {
-//                //산책 종료
-//            }
-
-
+            val currentMarker = labelManager!!.addLabelStyles(
+                LabelStyles.from("currentMarker", LabelStyle.from(R.drawable.play))
+            )
+            labelManager!!.layer!!.addLabel(LabelOptions.from("label", LatLng.from(lat, lon)).setStyles(currentMarker))
         }
+
+
+        binding.terminate.isEnabled = false
+        binding.terminate.visibility = View.INVISIBLE
+        binding.start.setOnClickListener{
+            binding.start.visibility = View.GONE
+            binding.terminate.visibility = View.VISIBLE
+            binding.terminate.isEnabled = true
+            walkViewModel.stopwatch.start()
+            Log.d("stopwatch start","start button touched")
+        }
+
+        binding.terminate.setOnClickListener {
+            //산책 종료
+
+            binding.terminate.visibility = View.GONE
+            walkViewModel.pauseStopwatch()
+            Log.d("stopwatch stop","terminate button touched")
+        }
+
+        walkViewModel.getTime().observe(requireActivity(), Observer {
+            var timeCounter = walkViewModel.getTime().value!!
+            time0 = timeCounter / 600
+            timeCounter %= 600
+            time1 = timeCounter / 60
+            timeCounter %= 60
+            time2 = timeCounter / 10
+            timeCounter %= 10
+            time3 = timeCounter
+            binding.time0.text = time0.toString()
+            binding.time1.text = time1.toString()
+            binding.time2.text = time2.toString()
+            binding.time3.text = time3.toString()
+        })
+
     }
 
 

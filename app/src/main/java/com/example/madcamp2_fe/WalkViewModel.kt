@@ -13,10 +13,17 @@ import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
 import com.google.android.gms.location.Priority.PRIORITY_HIGH_ACCURACY
+import kotlinx.coroutines.CoroutineStart
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import kotlinx.coroutines.yield
 
 class WalkViewModel : ViewModel() {
     private lateinit var userNickname : String
@@ -27,7 +34,31 @@ class WalkViewModel : ViewModel() {
     private var profileChanged : MutableLiveData<Boolean> = MutableLiveData(false)
     private var lon : MutableLiveData<Double> = MutableLiveData()
     private var lat : MutableLiveData<Double> = MutableLiveData()
+    private val time : MutableLiveData<Int> = MutableLiveData(0)
+    private var oldTimeMills : Long = 0
+    private var isRunning = true
 
+
+    val stopwatch : Job = viewModelScope.launch(start = CoroutineStart.LAZY){
+        withContext(Dispatchers.IO){
+            oldTimeMills = System.currentTimeMillis()
+            while(true){
+                if(isRunning){
+                    val delayMills = System.currentTimeMillis() - oldTimeMills
+                    if(delayMills == 1000L){
+                        time.postValue(time.value!!+1)
+                        oldTimeMills = System.currentTimeMillis()
+                        Log.d("start",time.value.toString())
+                    }
+                }
+                yield()
+            }
+        }
+    }
+    fun pauseStopwatch(){
+        isRunning = false
+        stopwatch.cancel()
+    }
 
     fun getUserName():String{
         return userNickname
@@ -53,6 +84,9 @@ class WalkViewModel : ViewModel() {
     fun getProfileChanged():MutableLiveData<Boolean>{
         return profileChanged
     }
+    fun getTime():MutableLiveData<Int>{
+        return time
+    }
     fun setLon(longitude : Double){
         lon.value = longitude
     }
@@ -74,6 +108,7 @@ class WalkViewModel : ViewModel() {
     fun setProfileChanged(bool:Boolean){
         profileChanged.value = bool
     }
+
 
 
 }
