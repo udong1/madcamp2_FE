@@ -20,4 +20,10 @@ object API{
     const val FOLLOW_LIST : String = "user/follow/list/v1"
 
     const val GET_WALK : String = "walkingRecord/my-list/v1"
+
+    const val SEARCH_FRIEND : String = "user/search/v1"
+
+    const val FOLLOW : String = "user/follow/v1"
+
+    const val UNFOLLOW : String = "user/unFollow/v1"
 }

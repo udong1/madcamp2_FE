@@ -1,6 +1,7 @@
 package com.example.madcamp2_fe.user_client
 
 import com.example.madcamp2_fe.friends_walks.FollowListResponse
+import com.example.madcamp2_fe.friends_walks.FriendBySearchResponse
 import com.example.madcamp2_fe.home.WalkResponse
 import com.example.madcamp2_fe.login.LoginRequest
 import com.example.madcamp2_fe.login.LoginResponse
@@ -11,11 +12,13 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
+import retrofit2.http.Query
 
 interface UserInterface {
     @POST(API.LOGIN)
@@ -45,4 +48,22 @@ interface UserInterface {
     fun getWalk(
         @Header("Authorization") authorization:String
     ) : Call<List<WalkResponse>>
+
+    @GET(API.SEARCH_FRIEND)
+    fun searchFriend(
+        @Header("Authorization") authorization:String,
+        @Query("search") search: String
+    ) : Call<List<FriendBySearchResponse>>
+
+    @GET(API.FOLLOW)
+    fun followFriend(
+        @Header("Authorization") authorization:String,
+        @Query("followedUserId") followedUserId: Long
+    ) : Call<Void>
+
+    @DELETE(API.UNFOLLOW)
+    fun unFollowFriend(
+        @Header("Authorization") authorization:String,
+        @Query("followedUserId") followedUserId: Long
+    ) : Call<Void>
 }

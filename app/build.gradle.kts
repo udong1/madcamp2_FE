@@ -19,7 +19,7 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        buildConfigField("String","KAKAO_API_KEY", getApiKey("KAKAO_API_KEY"))
+//        buildConfigField("String","KAKAO_API_KEY", getApiKey("KAKAO_API_KEY"))
     }
 
 
@@ -44,9 +44,9 @@ android {
         buildConfig = true
     }
 }
-fun getApiKey(propertyKey:String):String{
-    return gradleLocalProperties(rootDir).getProperty(propertyKey)
-}
+//fun getApiKey(propertyKey:String):String{
+//    return gradleLocalProperties(rootDir).getProperty(propertyKey)
+//}
 
 dependencies {
 

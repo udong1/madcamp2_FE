@@ -2,6 +2,7 @@ package com.example.madcamp2_fe.user_client
 
 import android.util.Log
 import com.example.madcamp2_fe.friends_walks.FollowListResponse
+import com.example.madcamp2_fe.friends_walks.FriendBySearchResponse
 import com.example.madcamp2_fe.home.WalkRequest
 import com.example.madcamp2_fe.home.WalkResponse
 import com.example.madcamp2_fe.login.LoginRequest
@@ -142,6 +143,75 @@ class UserClientManager {
             override fun onFailure(call: Call<List<WalkResponse>>, t: Throwable) {
                 Log.d(Constants.TAG, "get walk 실패 on Failure")
                 completion(RESPONSE_STATE.FAIL, listOf(WalkResponse(listOf(),"",0L,0.0 ,0L)))
+            }
+        })
+    }
+
+    fun searchFriends(token:String, search: String, completion:(RESPONSE_STATE, List<FriendBySearchResponse>)-> Unit){
+        val call = userInterface?.searchFriend("Bearer $token", search) ?:return
+        call.enqueue(object : retrofit2.Callback<List<FriendBySearchResponse>>{
+            override fun onResponse(call: Call<List<FriendBySearchResponse>>, response: Response<List<FriendBySearchResponse>>) {
+                Log.d("response.isSuccessful", "${response.isSuccessful}")
+                if (response.isSuccessful){
+                    Log.d(Constants.TAG, "search friend 성공")
+                    completion(RESPONSE_STATE.OKAY, response.body()!!)
+                }
+                else{
+                    Log.d(Constants.TAG, "search friend 실패")
+                    Log.d(Constants.TAG, "${response.errorBody()?.string()}")
+                    completion(RESPONSE_STATE.FAIL, listOf(FriendBySearchResponse(0L,"","" ,"")))
+                }
+            }
+
+            override fun onFailure(call: Call<List<FriendBySearchResponse>>, t: Throwable) {
+                Log.d(Constants.TAG, "search friend 실패 on Failure")
+                completion(RESPONSE_STATE.FAIL, listOf(FriendBySearchResponse(0L,"","" ,"")))
+            }
+        })
+    }
+
+    fun followFriend(token:String, followedUserId: Long, completion:(RESPONSE_STATE)-> Unit){
+        val call = userInterface?.followFriend("Bearer $token", followedUserId) ?:return
+        call.enqueue(object : retrofit2.Callback<Void>{
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                Log.d("response.isSuccessful", "${response.isSuccessful}")
+                if (response.isSuccessful){
+                    Log.d(Constants.TAG, "follow friend 성공")
+                    completion(RESPONSE_STATE.OKAY)
+                }
+                else{
+                    Log.d(Constants.TAG, "follow friend 실패")
+                    Log.d(Constants.TAG, "${response.errorBody()?.string()}")
+                    completion(RESPONSE_STATE.FAIL)
+                }
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                Log.d(Constants.TAG, "follow friend 실패 on Failure")
+                completion(RESPONSE_STATE.FAIL)
+            }
+        })
+    }
+
+    fun unFollowFriend(token:String, followedUserId: Long, completion:(RESPONSE_STATE)-> Unit){
+        val call = userInterface?.unFollowFriend("Bearer $token", followedUserId) ?:return
+        call.enqueue(object : retrofit2.Callback<Void>{
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                Log.d("response.isSuccessful", "${response.isSuccessful}")
+                if (response.isSuccessful){
+                    Log.d(Constants.TAG, "unfollow friend 성공")
+                    completion(RESPONSE_STATE.OKAY)
+                }
+                else{
+                    Log.d(Constants.TAG, "unfollow friend 실패")
+                    Log.d(Constants.TAG, "${response.errorBody()?.string()}")
+                    completion(RESPONSE_STATE.FAIL)
+                }
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                Log.d(Constants.TAG, "unfollow friend 실패 on Failure")
+                completion(RESPONSE_STATE.FAIL)
             }
         })
     }
