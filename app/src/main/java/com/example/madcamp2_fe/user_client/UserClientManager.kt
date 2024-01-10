@@ -74,6 +74,29 @@ class UserClientManager {
         })
     }
 
+    fun deleteProfile(token:String, completion:(RESPONSE_STATE)-> Unit){
+        val call = userInterface?.deleteProfile("Bearer $token") ?:return
+        call.enqueue(object : retrofit2.Callback<Void>{
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                Log.d("response.isSuccessful", "${response.isSuccessful}")
+                if (response.isSuccessful){
+                    Log.d(Constants.TAG, "delete profile 성공")
+                    completion(RESPONSE_STATE.OKAY)
+                }
+                else{
+                    Log.d(Constants.TAG, "delete profile 실패")
+                    Log.d(Constants.TAG, "${response.errorBody()?.string()}")
+                    completion(RESPONSE_STATE.FAIL)
+                }
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                Log.d(Constants.TAG, "delete profile 실패 on Failure")
+                completion(RESPONSE_STATE.FAIL)
+            }
+        })
+    }
+
 
     fun updateWalk(token : String, walk : WalkRequest, completion:(RESPONSE_STATE)-> Unit){
         Log.d("updateWalk", "$userInterface")

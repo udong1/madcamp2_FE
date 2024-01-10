@@ -15,9 +15,9 @@ object API{
 
     const val UPDATE : String = "user/modify/v1"
 
-    const val WALK : String = "walkingRecord/save/v1"
+    const val DELETE_PROFILE : String = "user/delete/profileImg/v1"
 
-    const val FOLLOW_LIST : String = "user/follow/list/v1"
+    const val WALK : String = "walkingRecord/save/v1"
 
     const val GET_WALK : String = "walkingRecord/my-list/v1"
 
@@ -26,6 +26,8 @@ object API{
     const val DELETE_WALK_RECORD : String = "walkingRecord/delete/v1"
 
     const val SEARCH_FRIEND : String = "user/search/v1"
+
+    const val FOLLOW_LIST : String = "user/follow/list/v1"
 
     const val FOLLOW : String = "user/follow/v1"
 

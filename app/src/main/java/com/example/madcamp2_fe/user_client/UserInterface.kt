@@ -34,6 +34,11 @@ interface UserInterface {
         @Part("nickname") userName: RequestBody
     ) : Call<UpdateResponse>
 
+    @POST(API.DELETE_PROFILE)
+    fun deleteProfile(
+        @Header("Authorization") authorization:String
+    ) : Call<Void>
+
     @POST(API.WALK)
     fun updateWalk(
         @Header("Authorization") authorization:String,
