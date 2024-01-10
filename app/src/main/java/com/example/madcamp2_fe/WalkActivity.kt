@@ -37,7 +37,8 @@ class WalkActivity : AppCompatActivity() {
         val userEmail = intent.getStringExtra("email")
         val userAccessToken = intent.getStringExtra("accessToken")
         val userIsRegistered = intent.getBooleanExtra("isRegistered", false)
-        var userProfileImg = intent.getStringExtra("profileImg")
+        val userProfileImg = intent.getStringExtra("profileImg")
+        val walkCount = intent.getLongExtra("walkCount", 0L)
 
         walkViewModel.setUserInfo(userNickname!!,userEmail!!, userAccessToken!!, userIsRegistered)
         if (userProfileImg == null){
@@ -46,6 +47,8 @@ class WalkActivity : AppCompatActivity() {
         else{
             walkViewModel.setUserProfile(userProfileImg)
         }
+        walkViewModel.setWalkCount(walkCount.toInt())
+
 
         val readPermission = ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE)
         val writePermission = ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)

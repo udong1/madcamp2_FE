@@ -10,5 +10,7 @@ data class FollowListResponse(
     var nickname: String,
 
     @SerializedName("profile_img_url")
-    var profileImgUrl: String?
+    var profileImgUrl: String?,
+    @SerializedName("walking_start_date_time")
+    var recentWalkTime: String?
 )

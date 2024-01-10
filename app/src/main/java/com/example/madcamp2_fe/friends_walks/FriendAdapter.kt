@@ -49,6 +49,7 @@ class FriendAdapter(var friendList : ArrayList<FollowListResponse> ) :
                     .into(friendProfile)
             }
         }
+        holder.date.text = friendList[position].recentWalkTime
     }
 
     interface OnFriendClickListener{

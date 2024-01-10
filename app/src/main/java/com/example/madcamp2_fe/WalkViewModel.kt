@@ -45,6 +45,7 @@ class WalkViewModel : ViewModel() {
     private lateinit var walkStartTime : LocalDateTime
     private lateinit var walkTerminateTime : LocalDateTime
     private lateinit var duration : String
+    private var walkCount = 0
 
 
     fun getUserName():String{
@@ -97,6 +98,9 @@ class WalkViewModel : ViewModel() {
     fun getLocationTracker(): MutableList<Location>{
         return locationTracker
     }
+    fun getWalkCount():Int{
+        return walkCount
+    }
     fun setLon(longitude : Double){
         lon.value = longitude
     }
@@ -132,6 +136,10 @@ class WalkViewModel : ViewModel() {
     }
     fun setWalkTerminateTime(){
         walkTerminateTime = LocalDateTime.now()
+    }
+
+    fun setWalkCount(day:Int){
+        walkCount = day
     }
 
 
