@@ -26,11 +26,26 @@
 
 <br/>
 
-## B. 어플리케이션 동작 
+## B. 어플리케이션 화면
+### 1. 로그인 페이지와 메인 페이지 
+<img width="751" alt="스크린샷 2024-01-10 오후 9 23 38" src="https://github.com/udong1/madcamp2_FE/assets/81519167/1cd3cd52-f1e4-46ce-8e99-cee79df6278b">
+
+### 2. 실시간 산책 기록 
+<img width="736" alt="스크린샷 2024-01-10 오후 9 24 46" src="https://github.com/udong1/madcamp2_FE/assets/81519167/63ef1947-f187-4bc2-9846-d45d3df99b3a">
+
+### 3. 나만의 산책 저장소
+ <img width="745" alt="스크린샷 2024-01-10 오후 9 24 54" src="https://github.com/udong1/madcamp2_FE/assets/81519167/94abd807-f710-4d67-b727-e13eb75bfebd">
+
+### 4. 친구 검색 및 추가 
+<img width="780" alt="스크린샷 2024-01-10 오후 9 25 02" src="https://github.com/udong1/madcamp2_FE/assets/81519167/b2b42efc-b1ba-4e46-923d-f55556b711c4">
+
+### 5. 나만의 친구 리스트 조회
+<img width="770" alt="스크린샷 2024-01-10 오후 9 26 45" src="https://github.com/udong1/madcamp2_FE/assets/81519167/106b16da-d337-4dd4-9735-f322779c1e1e">
+
 
 <br/>
 
-## D. APK
+## C. APK
 [app-release.apk.zip](https://github.com/udong1/madcamp2_FE/files/13887250/app-release.apk.zip)
 
 
