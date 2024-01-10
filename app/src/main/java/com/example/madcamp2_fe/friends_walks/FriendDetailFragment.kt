@@ -24,6 +24,20 @@ class FriendDetailFragment : Fragment() {
     }
 
     companion object {
+        fun newInstance(followListResponse: FollowListResponse) : FriendDetailFragment{
+            val fragment = FriendDetailFragment()
+            val args = Bundle()
+            if(followListResponse.profileImgUrl==null){
+                args.putString("friendProfile","default")
+            }
+            else{
+                args.putString("friendProfile",followListResponse.profileImgUrl)
+            }
+            args.putString("friendEmail",followListResponse.email)
+            args.putString("friendNickname",followListResponse.nickname)
+            args.putLong("friendId",followListResponse.userId)
 
+            return fragment
+        }
     }
 }

@@ -2,8 +2,8 @@ package com.example.madcamp2_fe.user_client
 
 import android.util.Log
 import com.example.madcamp2_fe.friends_walks.FollowListResponse
-import com.example.madcamp2_fe.home.LocationData
-import com.example.madcamp2_fe.home.Walk
+import com.example.madcamp2_fe.home.WalkRequest
+import com.example.madcamp2_fe.home.WalkResponse
 import com.example.madcamp2_fe.login.LoginRequest
 import com.example.madcamp2_fe.login.LoginResponse
 import com.example.madcamp2_fe.profile_update.UpdateResponse
@@ -42,7 +42,7 @@ class UserClientManager {
 
             override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
                 Log.d(TAG, "응답 실패 on Failure")
-                completion(RESPONSE_STATE.FAIL, LoginResponse("", "", "",false, ""))
+                completion(RESPONSE_STATE.FAIL, LoginResponse("", "", "",false, "",0L))
             }
         })
     }
@@ -74,7 +74,7 @@ class UserClientManager {
     }
 
 
-    fun updateWalk(token : String, walk : Walk, completion:(RESPONSE_STATE)-> Unit){
+    fun updateWalk(token : String, walk : WalkRequest, completion:(RESPONSE_STATE)-> Unit){
         Log.d("updateWalk", "$userInterface")
         val call = userInterface?.updateWalk("Bearer $token", walk) ?:return
         Log.d("distance","${walk.distance}")
@@ -123,10 +123,10 @@ class UserClientManager {
         })
     }
 
-    fun getWalk(token:String, completion:(RESPONSE_STATE, List<Walk>)-> Unit){
+    fun getWalk(token:String, completion:(RESPONSE_STATE, List<WalkResponse>)-> Unit){
         val call = userInterface?.getWalk("Bearer $token") ?:return
-        call.enqueue(object : retrofit2.Callback<List<Walk>>{
-            override fun onResponse(call: Call<List<Walk>>, response: Response<List<Walk>>) {
+        call.enqueue(object : retrofit2.Callback<List<WalkResponse>>{
+            override fun onResponse(call: Call<List<WalkResponse>>, response: Response<List<WalkResponse>>) {
                 Log.d("response.isSuccessful", "${response.isSuccessful}")
                 if (response.isSuccessful){
                     Log.d(Constants.TAG, "get walk 성공")
@@ -135,13 +135,13 @@ class UserClientManager {
                 else{
                     Log.d(Constants.TAG, "get walk 실패")
                     Log.d(Constants.TAG, "${response.errorBody()?.string()}")
-                    completion(RESPONSE_STATE.FAIL, listOf(Walk(listOf(),"",0L,0.0 )))
+                    completion(RESPONSE_STATE.FAIL, listOf(WalkResponse(listOf(),"",0L,0.0 ,0L)))
                 }
             }
 
-            override fun onFailure(call: Call<List<Walk>>, t: Throwable) {
+            override fun onFailure(call: Call<List<WalkResponse>>, t: Throwable) {
                 Log.d(Constants.TAG, "get walk 실패 on Failure")
-                completion(RESPONSE_STATE.FAIL, listOf(Walk(listOf(),"",0L,0.0 )))
+                completion(RESPONSE_STATE.FAIL, listOf(WalkResponse(listOf(),"",0L,0.0 ,0L)))
             }
         })
     }

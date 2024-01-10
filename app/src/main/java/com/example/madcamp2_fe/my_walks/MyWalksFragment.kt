@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.madcamp2_fe.WalkViewModel
 import com.example.madcamp2_fe.databinding.FragmentMyWalksBinding
-import com.example.madcamp2_fe.home.Walk
+import com.example.madcamp2_fe.home.WalkResponse
 import com.example.madcamp2_fe.user_client.UserClientManager
 import com.example.madcamp2_fe.utils.RESPONSE_STATE
 import com.kakao.sdk.user.Constants
@@ -21,7 +21,7 @@ class MyWalksFragment : Fragment() {
     private var _binding : FragmentMyWalksBinding? = null
     private lateinit var walkViewModel : WalkViewModel
     private lateinit var walkAdapter: WalkAdapter
-    private var walkList = arrayListOf<Walk>()
+    private var walkList = arrayListOf<WalkResponse>()
     private val binding get() = _binding!!
 
     override fun onCreateView(

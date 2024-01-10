@@ -51,5 +51,14 @@ class FriendAdapter(var friendList : ArrayList<FollowListResponse> ) :
         }
     }
 
+    interface OnFriendClickListener{
+        fun onClick(view : View, followListResponse: FollowListResponse)
+    }
+
+    fun setFriendClickListener(onFriendClickListener: OnFriendClickListener){
+        this.friendClickListener = onFriendClickListener
+    }
+
+    private lateinit var friendClickListener: OnFriendClickListener
 
 }

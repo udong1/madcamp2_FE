@@ -8,6 +8,6 @@ data class LoginResponse(
     @SerializedName("email") var email : String,
     @SerializedName("access_token") var accessToken : String,
     @SerializedName("is_registered") var isRegistered : Boolean=false,
-    @SerializedName("profile_img") var profileImg : String
-
+    @SerializedName("profile_img") var profileImg : String,
+    @SerializedName("walking_count") var walkCount : Long
 )

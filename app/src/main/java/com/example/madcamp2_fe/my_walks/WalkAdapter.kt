@@ -8,8 +8,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.madcamp2_fe.R
-import com.example.madcamp2_fe.home.LocationData
-import com.example.madcamp2_fe.home.Walk
+import com.example.madcamp2_fe.home.WalkResponse
 import com.kakao.vectormap.KakaoMap
 import com.kakao.vectormap.KakaoMapReadyCallback
 import com.kakao.vectormap.LatLng
@@ -24,9 +23,8 @@ import com.kakao.vectormap.route.RouteLineSegment
 import com.kakao.vectormap.route.RouteLineStyle
 import com.kakao.vectormap.route.RouteLineStyles
 import com.kakao.vectormap.route.RouteLineStylesSet
-import java.text.DecimalFormat
 
-class WalkAdapter(var walkList : ArrayList<Walk>):RecyclerView.Adapter<WalkAdapter.WalkViewHolder>(){
+class WalkAdapter(var walkList : ArrayList<WalkResponse>):RecyclerView.Adapter<WalkAdapter.WalkViewHolder>(){
     class WalkViewHolder(view : View):RecyclerView.ViewHolder(view){
         val distNum = view.findViewById<TextView>(R.id.distNum)!!
         val durationNum = view.findViewById<TextView>(R.id.durationNum)!!

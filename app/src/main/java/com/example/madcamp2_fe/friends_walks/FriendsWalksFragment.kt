@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.madcamp2_fe.R
 import com.example.madcamp2_fe.WalkViewModel
 import com.example.madcamp2_fe.databinding.FragmentFriendsWalksBinding
 import com.example.madcamp2_fe.user_client.UserClientManager
@@ -60,7 +61,15 @@ class FriendsWalksFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        friendAdapter.setFriendClickListener(object : FriendAdapter.OnFriendClickListener{
+            override fun onClick(view: View, followListResponse: FollowListResponse) {
+                val friendDetailFragment = FriendDetailFragment.newInstance(followListResponse)
+                requireActivity().supportFragmentManager.beginTransaction()
+                    .replace(R.id.frame, friendDetailFragment)
+                    .addToBackStack(null)
+                    .commit()
+            }
+        })
 
     }
 
