@@ -56,6 +56,12 @@ interface UserInterface {
         @Query("followedUserId") followedUserId: Long
     ) : Call<List<WalkResponse>>
 
+    @DELETE(API.DELETE_WALK_RECORD)
+    fun deleteWalkRecord(
+        @Header("Authorization") authorization:String,
+        @Query("walkingRecordId") walkingRecordId: Long
+    ) : Call<Void>
+
     @GET(API.SEARCH_FRIEND)
     fun searchFriend(
         @Header("Authorization") authorization:String,

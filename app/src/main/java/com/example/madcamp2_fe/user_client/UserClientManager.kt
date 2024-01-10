@@ -100,6 +100,29 @@ class UserClientManager {
         })
     }
 
+    fun deleteWalkRecord(token:String, walkingRecordId: Long, completion:(RESPONSE_STATE)-> Unit){
+        val call = userInterface?.deleteWalkRecord("Bearer $token", walkingRecordId) ?:return
+        call.enqueue(object : retrofit2.Callback<Void>{
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                Log.d("response.isSuccessful", "${response.isSuccessful}")
+                if (response.isSuccessful){
+                    Log.d(Constants.TAG, "delete walk-record 성공")
+                    completion(RESPONSE_STATE.OKAY)
+                }
+                else{
+                    Log.d(Constants.TAG, "delete walk-record 실패")
+                    Log.d(Constants.TAG, "${response.errorBody()?.string()}")
+                    completion(RESPONSE_STATE.FAIL)
+                }
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                Log.d(Constants.TAG, "delete walk-record 실패 on Failure")
+                completion(RESPONSE_STATE.FAIL)
+            }
+        })
+    }
+
     fun getFollowList(token : String, completion:(RESPONSE_STATE, List<FollowListResponse>)-> Unit){
         val call = userInterface?.getFollowList("Bearer $token") ?:return
         call.enqueue(object : retrofit2.Callback<List<FollowListResponse>>{
