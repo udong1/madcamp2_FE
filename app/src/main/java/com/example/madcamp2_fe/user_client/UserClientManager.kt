@@ -153,18 +153,18 @@ class UserClientManager {
             override fun onResponse(call: Call<List<FriendBySearchResponse>>, response: Response<List<FriendBySearchResponse>>) {
                 Log.d("response.isSuccessful", "${response.isSuccessful}")
                 if (response.isSuccessful){
-                    Log.d(Constants.TAG, "get walk 성공")
+                    Log.d(Constants.TAG, "search friend 성공")
                     completion(RESPONSE_STATE.OKAY, response.body()!!)
                 }
                 else{
-                    Log.d(Constants.TAG, "get walk 실패")
+                    Log.d(Constants.TAG, "search friend 실패")
                     Log.d(Constants.TAG, "${response.errorBody()?.string()}")
                     completion(RESPONSE_STATE.FAIL, listOf(FriendBySearchResponse(0L,"","" ,"")))
                 }
             }
 
             override fun onFailure(call: Call<List<FriendBySearchResponse>>, t: Throwable) {
-                Log.d(Constants.TAG, "get walk 실패 on Failure")
+                Log.d(Constants.TAG, "search friend 실패 on Failure")
                 completion(RESPONSE_STATE.FAIL, listOf(FriendBySearchResponse(0L,"","" ,"")))
             }
         })
@@ -176,18 +176,41 @@ class UserClientManager {
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
                 Log.d("response.isSuccessful", "${response.isSuccessful}")
                 if (response.isSuccessful){
-                    Log.d(Constants.TAG, "get walk 성공")
+                    Log.d(Constants.TAG, "follow friend 성공")
                     completion(RESPONSE_STATE.OKAY)
                 }
                 else{
-                    Log.d(Constants.TAG, "get walk 실패")
+                    Log.d(Constants.TAG, "follow friend 실패")
                     Log.d(Constants.TAG, "${response.errorBody()?.string()}")
                     completion(RESPONSE_STATE.FAIL)
                 }
             }
 
             override fun onFailure(call: Call<Void>, t: Throwable) {
-                Log.d(Constants.TAG, "get walk 실패 on Failure")
+                Log.d(Constants.TAG, "follow friend 실패 on Failure")
+                completion(RESPONSE_STATE.FAIL)
+            }
+        })
+    }
+
+    fun unFollowFriend(token:String, followedUserId: Long, completion:(RESPONSE_STATE)-> Unit){
+        val call = userInterface?.unFollowFriend("Bearer $token", followedUserId) ?:return
+        call.enqueue(object : retrofit2.Callback<Void>{
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                Log.d("response.isSuccessful", "${response.isSuccessful}")
+                if (response.isSuccessful){
+                    Log.d(Constants.TAG, "unfollow friend 성공")
+                    completion(RESPONSE_STATE.OKAY)
+                }
+                else{
+                    Log.d(Constants.TAG, "unfollow friend 실패")
+                    Log.d(Constants.TAG, "${response.errorBody()?.string()}")
+                    completion(RESPONSE_STATE.FAIL)
+                }
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                Log.d(Constants.TAG, "unfollow friend 실패 on Failure")
                 completion(RESPONSE_STATE.FAIL)
             }
         })

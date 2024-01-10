@@ -12,6 +12,7 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Multipart
@@ -56,6 +57,12 @@ interface UserInterface {
 
     @GET(API.FOLLOW)
     fun followFriend(
+        @Header("Authorization") authorization:String,
+        @Query("followedUserId") followedUserId: Long
+    ) : Call<Void>
+
+    @DELETE(API.UNFOLLOW)
+    fun unFollowFriend(
         @Header("Authorization") authorization:String,
         @Query("followedUserId") followedUserId: Long
     ) : Call<Void>
