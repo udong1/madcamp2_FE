@@ -22,8 +22,9 @@ import retrofit2.http.Query
 
 interface UserInterface {
     @POST(API.LOGIN)
-    fun login(@Body loginRequest: LoginRequest) : Call<LoginResponse>
-
+    fun login(
+        @Body loginRequest: LoginRequest
+    ) : Call<LoginResponse>
 
     @Multipart
     @POST(API.UPDATE)
@@ -47,6 +48,12 @@ interface UserInterface {
     @GET(API.GET_WALK)
     fun getWalk(
         @Header("Authorization") authorization:String
+    ) : Call<List<WalkResponse>>
+
+    @GET(API.GET_WALK_OF_FRIEND)
+    fun getWalkOfFriend(
+        @Header("Authorization") authorization:String,
+        @Query("followedUserId") followedUserId: Long
     ) : Call<List<WalkResponse>>
 
     @GET(API.SEARCH_FRIEND)

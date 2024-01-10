@@ -147,6 +147,29 @@ class UserClientManager {
         })
     }
 
+    fun getWalkOfFriend(token:String, followedUserId: Long, completion:(RESPONSE_STATE, List<WalkResponse>)-> Unit){
+        val call = userInterface?.getWalkOfFriend("Bearer $token", followedUserId) ?:return
+        call.enqueue(object : retrofit2.Callback<List<WalkResponse>>{
+            override fun onResponse(call: Call<List<WalkResponse>>, response: Response<List<WalkResponse>>) {
+                Log.d("response.isSuccessful", "${response.isSuccessful}")
+                if (response.isSuccessful){
+                    Log.d(Constants.TAG, "get walk of friend 성공")
+                    completion(RESPONSE_STATE.OKAY, response.body()!!)
+                }
+                else{
+                    Log.d(Constants.TAG, "get walk of friend 실패")
+                    Log.d(Constants.TAG, "${response.errorBody()?.string()}")
+                    completion(RESPONSE_STATE.FAIL, listOf(WalkResponse(listOf(),"",0L,0.0 ,0L)))
+                }
+            }
+
+            override fun onFailure(call: Call<List<WalkResponse>>, t: Throwable) {
+                Log.d(Constants.TAG, "get walk of friend 실패 on Failure")
+                completion(RESPONSE_STATE.FAIL, listOf(WalkResponse(listOf(),"",0L,0.0 ,0L)))
+            }
+        })
+    }
+
     fun searchFriends(token:String, search: String, completion:(RESPONSE_STATE, List<FriendBySearchResponse>)-> Unit){
         val call = userInterface?.searchFriend("Bearer $token", search) ?:return
         call.enqueue(object : retrofit2.Callback<List<FriendBySearchResponse>>{
@@ -215,5 +238,4 @@ class UserClientManager {
             }
         })
     }
-
 }

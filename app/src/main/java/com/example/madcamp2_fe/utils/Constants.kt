@@ -21,6 +21,8 @@ object API{
 
     const val GET_WALK : String = "walkingRecord/my-list/v1"
 
+    const val GET_WALK_OF_FRIEND : String = "walkingRecord/list/v1"
+
     const val SEARCH_FRIEND : String = "user/search/v1"
 
     const val FOLLOW : String = "user/follow/v1"
