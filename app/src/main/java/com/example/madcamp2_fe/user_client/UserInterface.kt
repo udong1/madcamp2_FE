@@ -1,6 +1,7 @@
 package com.example.madcamp2_fe.user_client
 
 import com.example.madcamp2_fe.friends_walks.FollowListResponse
+import com.example.madcamp2_fe.friends_walks.FriendBySearchResponse
 import com.example.madcamp2_fe.home.WalkResponse
 import com.example.madcamp2_fe.login.LoginRequest
 import com.example.madcamp2_fe.login.LoginResponse
@@ -45,4 +46,9 @@ interface UserInterface {
     fun getWalk(
         @Header("Authorization") authorization:String
     ) : Call<List<WalkResponse>>
+
+    @GET(API.SEARCH_FRIEND)
+    fun searchFriend(
+        @Header("Authorization") authorization:String
+    ) : Call<List<FriendBySearchResponse>>
 }

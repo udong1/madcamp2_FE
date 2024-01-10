@@ -2,6 +2,7 @@ package com.example.madcamp2_fe.user_client
 
 import android.util.Log
 import com.example.madcamp2_fe.friends_walks.FollowListResponse
+import com.example.madcamp2_fe.friends_walks.FriendBySearchResponse
 import com.example.madcamp2_fe.home.WalkRequest
 import com.example.madcamp2_fe.home.WalkResponse
 import com.example.madcamp2_fe.login.LoginRequest
@@ -142,6 +143,29 @@ class UserClientManager {
             override fun onFailure(call: Call<List<WalkResponse>>, t: Throwable) {
                 Log.d(Constants.TAG, "get walk 실패 on Failure")
                 completion(RESPONSE_STATE.FAIL, listOf(WalkResponse(listOf(),"",0L,0.0 ,0L)))
+            }
+        })
+    }
+
+    fun searchFriends(token:String, completion:(RESPONSE_STATE, List<FriendBySearchResponse>)-> Unit){
+        val call = userInterface?.searchFriend("Bearer $token") ?:return
+        call.enqueue(object : retrofit2.Callback<List<FriendBySearchResponse>>{
+            override fun onResponse(call: Call<List<FriendBySearchResponse>>, response: Response<List<FriendBySearchResponse>>) {
+                Log.d("response.isSuccessful", "${response.isSuccessful}")
+                if (response.isSuccessful){
+                    Log.d(Constants.TAG, "get walk 성공")
+                    completion(RESPONSE_STATE.OKAY, response.body()!!)
+                }
+                else{
+                    Log.d(Constants.TAG, "get walk 실패")
+                    Log.d(Constants.TAG, "${response.errorBody()?.string()}")
+                    completion(RESPONSE_STATE.FAIL, listOf(FriendBySearchResponse(0L,"","" ,"")))
+                }
+            }
+
+            override fun onFailure(call: Call<List<FriendBySearchResponse>>, t: Throwable) {
+                Log.d(Constants.TAG, "get walk 실패 on Failure")
+                completion(RESPONSE_STATE.FAIL, listOf(FriendBySearchResponse(0L,"","" ,"")))
             }
         })
     }
