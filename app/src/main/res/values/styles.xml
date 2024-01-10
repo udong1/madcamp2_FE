@@ -10,5 +10,13 @@
         <item name="android:checkboxStyle">@style/customCheckboxFontStyle</item>
 
     </style>
+    <style name="CustomTabLayout" parent = "Widget.Design.TabLayout">
+        <item name="tabTextAppearance">@style/CustomTabText</item>
+        <item name="android:background">#FFFFFF</item>
+        <item name="tabSelectedTextColor">#74ba81</item>
+    </style>
+    <style name="CustomTabText" parent="TextAppearance.Design.Tab">
+        <item name="android:fontFamily">@font/sejong_font</item>
+    </style>
 
 </resources>

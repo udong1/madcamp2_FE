@@ -203,12 +203,11 @@ class HomeFragment : Fragment() {
                 LocationData(location.latitude, location.longitude, index.toLong())
             }
 
-            val walk = Walk(
+            val walk = WalkRequest(
                 locList = convertedLocationList,
                 walkStartDateTime = walkViewModel.getWalkStartTime().toString(),
                 walkingTime = walkViewModel.getDuration().toLong(),
-                distance = walkViewModel.getDistanceTracker().value!!.toDouble()
-            )
+                distance = walkViewModel.getDistanceTracker().value!!.toDouble())
 
 
             UserClientManager.instance.updateWalk(

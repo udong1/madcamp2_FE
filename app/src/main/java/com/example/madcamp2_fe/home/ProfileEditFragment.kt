@@ -131,6 +131,7 @@ class ProfileEditFragment : Fragment() {
                             RESPONSE_STATE.OKAY ->{
                                 Log.d(Constants.TAG, "업데이트 성공 : $responseBody")
                                 walkViewModel.changeUserName(responseBody.updatedNickname)
+                                walkViewModel.setUserProfile(responseBody.updatedProfileImg!!)
                                 walkViewModel.setProfileChanged(true)
                             }
                             RESPONSE_STATE.FAIL ->{

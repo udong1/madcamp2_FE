@@ -74,15 +74,16 @@ class WalkActivity : AppCompatActivity() {
         binding.tabBar.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener{
             override fun onTabSelected(tab: TabLayout.Tab){
                 when (tab.text){
-                    "Home"->{
+                    "어슬렁 홈"->{
                         supportFragmentManager.beginTransaction().replace(R.id.frame, home)
                             .commit()
                     }
-                    "MyWalks"->{
+                    "내 기록"->{
+                        Log.d("mywalks","called")
                         supportFragmentManager.beginTransaction().replace(R.id.frame, myWalks)
                             .commit()
                     }
-                    "FriendsWalks"->{
+                    "친구"->{
                         supportFragmentManager.beginTransaction().replace(R.id.frame, friendsWalks)
                             .commit()
                     }

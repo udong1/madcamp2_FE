@@ -1,14 +1,17 @@
 package com.example.madcamp2_fe.user_client
 
-import com.example.madcamp2_fe.home.Walk
+import com.example.madcamp2_fe.friends_walks.FollowListResponse
+import com.example.madcamp2_fe.home.WalkResponse
 import com.example.madcamp2_fe.login.LoginRequest
 import com.example.madcamp2_fe.login.LoginResponse
 import com.example.madcamp2_fe.profile_update.UpdateResponse
 import com.example.madcamp2_fe.utils.API
+import com.example.madcamp2_fe.home.WalkRequest
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Multipart
 import retrofit2.http.POST
@@ -30,7 +33,16 @@ interface UserInterface {
     @POST(API.WALK)
     fun updateWalk(
         @Header("Authorization") authorization:String,
-        @Body walk : Walk
+        @Body walk : WalkRequest
     ) : Call<Void>
 
+    @GET(API.FOLLOW_LIST)
+    fun getFollowList(
+        @Header("Authorization") authorization:String
+    ): Call<List<FollowListResponse>>
+
+    @GET(API.GET_WALK)
+    fun getWalk(
+        @Header("Authorization") authorization:String
+    ) : Call<List<WalkResponse>>
 }
