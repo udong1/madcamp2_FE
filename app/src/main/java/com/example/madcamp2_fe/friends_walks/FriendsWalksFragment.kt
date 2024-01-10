@@ -33,12 +33,8 @@ class FriendsWalksFragment : Fragment() {
         walkViewModel = ViewModelProvider(requireActivity()).get(WalkViewModel::class.java)
         friendViewModel = ViewModelProvider(requireActivity()).get(FriendViewModel::class.java)
         this.friendAdapter = FriendAdapter(friendViewModel.getFriendList())
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
+        binding.friendShow.adapter = friendAdapter
+        binding.friendShow.layoutManager = LinearLayoutManager(this.context)
         friendViewModel.reset()
         UserClientManager.instance.getFollowList(
             token = walkViewModel.getUserAccessToken(),
@@ -59,8 +55,11 @@ class FriendsWalksFragment : Fragment() {
                     }
                 }
             })
-        binding.friendShow.adapter = friendAdapter
-        binding.friendShow.layoutManager = LinearLayoutManager(this.context)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
 
     }

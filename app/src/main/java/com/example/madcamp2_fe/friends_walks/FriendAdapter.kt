@@ -50,4 +50,6 @@ class FriendAdapter(var friendList : ArrayList<FollowListResponse> ) :
             }
         }
     }
+
+
 }

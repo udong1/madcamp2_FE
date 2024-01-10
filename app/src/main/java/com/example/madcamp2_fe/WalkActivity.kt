@@ -79,6 +79,7 @@ class WalkActivity : AppCompatActivity() {
                             .commit()
                     }
                     "내 기록"->{
+                        Log.d("mywalks","called")
                         supportFragmentManager.beginTransaction().replace(R.id.frame, myWalks)
                             .commit()
                     }
