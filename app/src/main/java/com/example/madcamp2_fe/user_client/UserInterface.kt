@@ -22,8 +22,9 @@ import retrofit2.http.Query
 
 interface UserInterface {
     @POST(API.LOGIN)
-    fun login(@Body loginRequest: LoginRequest) : Call<LoginResponse>
-
+    fun login(
+        @Body loginRequest: LoginRequest
+    ) : Call<LoginResponse>
 
     @Multipart
     @POST(API.UPDATE)
@@ -32,6 +33,11 @@ interface UserInterface {
         @Part profileImg: MultipartBody.Part?,
         @Part("nickname") userName: RequestBody
     ) : Call<UpdateResponse>
+
+    @POST(API.DELETE_PROFILE)
+    fun deleteProfile(
+        @Header("Authorization") authorization:String
+    ) : Call<Void>
 
     @POST(API.WALK)
     fun updateWalk(
@@ -48,6 +54,18 @@ interface UserInterface {
     fun getWalk(
         @Header("Authorization") authorization:String
     ) : Call<List<WalkResponse>>
+
+    @GET(API.GET_WALK_OF_FRIEND)
+    fun getWalkOfFriend(
+        @Header("Authorization") authorization:String,
+        @Query("followedUserId") followedUserId: Long
+    ) : Call<List<WalkResponse>>
+
+    @DELETE(API.DELETE_WALK_RECORD)
+    fun deleteWalkRecord(
+        @Header("Authorization") authorization:String,
+        @Query("walkingRecordId") walkingRecordId: Long
+    ) : Call<Void>
 
     @GET(API.SEARCH_FRIEND)
     fun searchFriend(

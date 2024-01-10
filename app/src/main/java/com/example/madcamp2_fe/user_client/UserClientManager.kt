@@ -74,6 +74,29 @@ class UserClientManager {
         })
     }
 
+    fun deleteProfile(token:String, completion:(RESPONSE_STATE)-> Unit){
+        val call = userInterface?.deleteProfile("Bearer $token") ?:return
+        call.enqueue(object : retrofit2.Callback<Void>{
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                Log.d("response.isSuccessful", "${response.isSuccessful}")
+                if (response.isSuccessful){
+                    Log.d(Constants.TAG, "delete profile 성공")
+                    completion(RESPONSE_STATE.OKAY)
+                }
+                else{
+                    Log.d(Constants.TAG, "delete profile 실패")
+                    Log.d(Constants.TAG, "${response.errorBody()?.string()}")
+                    completion(RESPONSE_STATE.FAIL)
+                }
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                Log.d(Constants.TAG, "delete profile 실패 on Failure")
+                completion(RESPONSE_STATE.FAIL)
+            }
+        })
+    }
+
 
     fun updateWalk(token : String, walk : WalkRequest, completion:(RESPONSE_STATE)-> Unit){
         Log.d("updateWalk", "$userInterface")
@@ -95,6 +118,29 @@ class UserClientManager {
 
             override fun onFailure(call: Call<Void>, t: Throwable) {
                 Log.d(Constants.TAG, "프로필 업데이트 응답 실패 on Failure")
+                completion(RESPONSE_STATE.FAIL)
+            }
+        })
+    }
+
+    fun deleteWalkRecord(token:String, walkingRecordId: Long, completion:(RESPONSE_STATE)-> Unit){
+        val call = userInterface?.deleteWalkRecord("Bearer $token", walkingRecordId) ?:return
+        call.enqueue(object : retrofit2.Callback<Void>{
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                Log.d("response.isSuccessful", "${response.isSuccessful}")
+                if (response.isSuccessful){
+                    Log.d(Constants.TAG, "delete walk-record 성공")
+                    completion(RESPONSE_STATE.OKAY)
+                }
+                else{
+                    Log.d(Constants.TAG, "delete walk-record 실패")
+                    Log.d(Constants.TAG, "${response.errorBody()?.string()}")
+                    completion(RESPONSE_STATE.FAIL)
+                }
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                Log.d(Constants.TAG, "delete walk-record 실패 on Failure")
                 completion(RESPONSE_STATE.FAIL)
             }
         })
@@ -142,6 +188,29 @@ class UserClientManager {
 
             override fun onFailure(call: Call<List<WalkResponse>>, t: Throwable) {
                 Log.d(Constants.TAG, "get walk 실패 on Failure")
+                completion(RESPONSE_STATE.FAIL, listOf(WalkResponse(listOf(),"",0L,0.0 ,0L)))
+            }
+        })
+    }
+
+    fun getWalkOfFriend(token:String, followedUserId: Long, completion:(RESPONSE_STATE, List<WalkResponse>)-> Unit){
+        val call = userInterface?.getWalkOfFriend("Bearer $token", followedUserId) ?:return
+        call.enqueue(object : retrofit2.Callback<List<WalkResponse>>{
+            override fun onResponse(call: Call<List<WalkResponse>>, response: Response<List<WalkResponse>>) {
+                Log.d("response.isSuccessful", "${response.isSuccessful}")
+                if (response.isSuccessful){
+                    Log.d(Constants.TAG, "get walk of friend 성공")
+                    completion(RESPONSE_STATE.OKAY, response.body()!!)
+                }
+                else{
+                    Log.d(Constants.TAG, "get walk of friend 실패")
+                    Log.d(Constants.TAG, "${response.errorBody()?.string()}")
+                    completion(RESPONSE_STATE.FAIL, listOf(WalkResponse(listOf(),"",0L,0.0 ,0L)))
+                }
+            }
+
+            override fun onFailure(call: Call<List<WalkResponse>>, t: Throwable) {
+                Log.d(Constants.TAG, "get walk of friend 실패 on Failure")
                 completion(RESPONSE_STATE.FAIL, listOf(WalkResponse(listOf(),"",0L,0.0 ,0L)))
             }
         })
@@ -215,5 +284,4 @@ class UserClientManager {
             }
         })
     }
-
 }
