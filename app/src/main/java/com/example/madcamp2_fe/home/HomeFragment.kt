@@ -80,6 +80,7 @@ class HomeFragment : Fragment() {
                 .into(binding.profile)
         }
         binding.homeName.text=walkViewModel.getUserName()
+        binding.greeting.text="최근 7일간 ${walkViewModel.getWalkCount()}번 산책했어요!"
         return binding.root
     }
 

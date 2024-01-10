@@ -113,13 +113,13 @@ class UserClientManager {
                 else{
                     Log.d(Constants.TAG, "follow list 조회 실패")
                     Log.d(Constants.TAG, "${response.errorBody()?.string()}")
-                    completion(RESPONSE_STATE.FAIL, listOf(FollowListResponse(0L,"","","")))
+                    completion(RESPONSE_STATE.FAIL, listOf(FollowListResponse(0L,"","","","")))
                 }
             }
 
             override fun onFailure(call: Call<List<FollowListResponse>>, t: Throwable) {
                 Log.d(Constants.TAG, "follow list 조회 on Failure")
-                completion(RESPONSE_STATE.FAIL, listOf(FollowListResponse(0L,"","","")))
+                completion(RESPONSE_STATE.FAIL, listOf(FollowListResponse(0L,"","","","")))
             }
         })
     }

@@ -44,6 +44,12 @@ class MainActivityLogin : AppCompatActivity() {
                 intent.putExtra("accessToken", loginInfo.value!!.accessToken)
                 intent.putExtra("isRegistered", loginInfo.value!!.isRegistered)
                 intent.putExtra("profileImg", loginInfo.value!!.profileImg)
+                if(loginInfo.value!!.walkCount != null){
+                    intent.putExtra("walkCount",loginInfo.value!!.walkCount)
+                }
+                else{
+                    intent.putExtra("walkCount",0L)
+                }
                 Log.d("observe", "move to walkActivity")
                 startActivity(intent)
                 finish()
