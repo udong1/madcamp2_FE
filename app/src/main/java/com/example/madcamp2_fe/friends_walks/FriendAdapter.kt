@@ -4,8 +4,10 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.madcamp2_fe.R
 import com.kakao.vectormap.KakaoMap
 import com.kakao.vectormap.KakaoMapReadyCallback
@@ -16,15 +18,16 @@ import com.kakao.vectormap.route.RouteLineSegment
 import com.kakao.vectormap.route.RouteLineStyle
 import com.kakao.vectormap.route.RouteLineStyles
 import com.kakao.vectormap.route.RouteLineStylesSet
+import de.hdodenhof.circleimageview.CircleImageView
 import java.text.DecimalFormat
 
-class FriendAdapter {
+class FriendAdapter(var friendList : ArrayList<FollowListResponse> ) :
+    RecyclerView.Adapter<FriendAdapter.FriendViewHolder>(){
 
     class FriendViewHolder(view : View): RecyclerView.ViewHolder(view){
-        val distNum = view.findViewById<TextView>(R.id.distNum)!!
-        val durationNum = view.findViewById<TextView>(R.id.durationNum)!!
-        val date = view.findViewById<TextView>(R.id.date)!!
-        val map = view.findViewById<MapView>(R.id.mapViewRec)!!
+        val friendProfile = view.findViewById<CircleImageView>(R.id.friendProfile)!!
+        val friendName = view.findViewById<TextView>(R.id.friendName)!!
+        val date = view.findViewById<TextView>(R.id.friendWalkDate)!!
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FriendViewHolder {
@@ -33,10 +36,18 @@ class FriendAdapter {
     }
 
     override fun getItemCount(): Int {
-        return
+        return friendList.size
     }
 
     override fun onBindViewHolder(holder: FriendViewHolder, position: Int) {
-        return
+        holder.friendName.text = friendList[position].nickname
+//        holder.friendEmail.text = friendList[position].email
+        if(friendList[position].profileImgUrl!=null){
+            holder.apply{
+                Glide.with(holder.itemView.context)
+                    .load(friendList[position].profileImgUrl)
+                    .into(friendProfile)
+            }
+        }
     }
 }

@@ -16,4 +16,8 @@ object API{
     const val UPDATE : String = "user/modify/v1"
 
     const val WALK : String = "walkingRecord/save/v1"
+
+    const val FOLLOW_LIST : String = "user/follow/list/v1"
+
+    const val GET_WALK : String = "walkingRecord/my-list/v1"
 }

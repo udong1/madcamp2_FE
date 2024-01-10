@@ -15,7 +15,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/tab3DetailTopBar"
             android:layout_width="match_parent"
-            android:layout_height="70dp"
+            android:layout_height="80dp"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -33,14 +33,14 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageButton
+                android:id="@+id/friendAdd"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_marginLeft="20dp"
                 android:background="@drawable/return_back_small_yellow"
-                android:id="@+id/friendAdd"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

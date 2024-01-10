@@ -1,5 +1,6 @@
 package com.example.madcamp2_fe.user_client
 
+import com.example.madcamp2_fe.friends_walks.FollowListResponse
 import com.example.madcamp2_fe.home.Walk
 import com.example.madcamp2_fe.login.LoginRequest
 import com.example.madcamp2_fe.login.LoginResponse
@@ -9,6 +10,7 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Multipart
 import retrofit2.http.POST
@@ -33,4 +35,13 @@ interface UserInterface {
         @Body walk : Walk
     ) : Call<Void>
 
+    @GET(API.FOLLOW_LIST)
+    fun getFollowList(
+        @Header("Authorization") authorization:String
+    ): Call<List<FollowListResponse>>
+
+    @GET(API.GET_WALK)
+    fun getWalk(
+        @Header("Authorization") authorization:String
+    ) : Call<List<Walk>>
 }
