@@ -17,6 +17,7 @@ import retrofit2.http.Header
 import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
+import retrofit2.http.Query
 
 interface UserInterface {
     @POST(API.LOGIN)
@@ -49,6 +50,7 @@ interface UserInterface {
 
     @GET(API.SEARCH_FRIEND)
     fun searchFriend(
-        @Header("Authorization") authorization:String
+        @Header("Authorization") authorization:String,
+        @Query("search") search: String
     ) : Call<List<FriendBySearchResponse>>
 }

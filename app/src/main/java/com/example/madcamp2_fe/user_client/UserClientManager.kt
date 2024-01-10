@@ -147,8 +147,8 @@ class UserClientManager {
         })
     }
 
-    fun searchFriends(token:String, completion:(RESPONSE_STATE, List<FriendBySearchResponse>)-> Unit){
-        val call = userInterface?.searchFriend("Bearer $token") ?:return
+    fun searchFriends(token:String, search: String, completion:(RESPONSE_STATE, List<FriendBySearchResponse>)-> Unit){
+        val call = userInterface?.searchFriend("Bearer $token", search) ?:return
         call.enqueue(object : retrofit2.Callback<List<FriendBySearchResponse>>{
             override fun onResponse(call: Call<List<FriendBySearchResponse>>, response: Response<List<FriendBySearchResponse>>) {
                 Log.d("response.isSuccessful", "${response.isSuccessful}")

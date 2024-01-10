@@ -7,7 +7,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object UserClient{
     private lateinit var userLoginClient : Retrofit
-    fun getClient(baseUrl : String ):Retrofit? {
+    fun getClient(baseUrl : String):Retrofit? {
         userLoginClient = Retrofit.Builder()
             .baseUrl(baseUrl)
             .addConverterFactory(GsonConverterFactory.create())
