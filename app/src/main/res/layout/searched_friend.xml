@@ -21,7 +21,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/friendProfile"
+        android:id="@+id/searchedFriendProfile"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_marginLeft="25dp"
@@ -31,45 +31,46 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="wrap_content"
+        android:id="@+id/searchedFriendText"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_marginLeft="20dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toRightOf="@id/friendProfile"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintLeft_toRightOf="@id/searchedFriendProfile"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
 
         <TextView
-            android:id="@+id/friendName"
+            android:id="@+id/searchedFriendName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/sejong_font"
             android:text="TextView"
             android:textSize="20sp"
-            app:layout_constraintBottom_toTopOf="@id/friendWalkDate"
+            app:layout_constraintBottom_toTopOf="@id/searchedFriendEmail"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/friendWalkDate"
+            android:id="@+id/searchedFriendEmail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:fontFamily="@font/sejong_hospital_light"
             android:text="TextView"
-            android:textSize="14sp"
-            app:layout_constraintBottom_toTopOf="friendEmail"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/friendName" />
-
-        <TextView
-            android:id="@+id/friendEmail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/sejong_hospital_light"
-            android:text="@string/email"
-            android:textSize="14sp"
-            app:layout_constraintLeft_toLeftOf="parent"
+            android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/friendWalkDate"/>
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/searchedFriendName" />
+
+        <ImageButton
+            android:id="@+id/addSearchedFriend"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/add_friend"
+            app:layout_constraintBottom_toBottomOf="@id/searchedFriendName"
+            app:layout_constraintRight_toRightOf="parent"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

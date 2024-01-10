@@ -55,7 +55,7 @@ interface UserInterface {
         @Query("search") search: String
     ) : Call<List<FriendBySearchResponse>>
 
-    @GET(API.FOLLOW)
+    @POST(API.FOLLOW)
     fun followFriend(
         @Header("Authorization") authorization:String,
         @Query("followedUserId") followedUserId: Long

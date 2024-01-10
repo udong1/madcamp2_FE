@@ -1,25 +1,17 @@
 package com.example.madcamp2_fe.friends_walks
 
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.madcamp2_fe.R
-import com.kakao.vectormap.KakaoMap
-import com.kakao.vectormap.KakaoMapReadyCallback
-import com.kakao.vectormap.MapLifeCycleCallback
-import com.kakao.vectormap.MapView
-import com.kakao.vectormap.route.RouteLineOptions
-import com.kakao.vectormap.route.RouteLineSegment
-import com.kakao.vectormap.route.RouteLineStyle
-import com.kakao.vectormap.route.RouteLineStyles
-import com.kakao.vectormap.route.RouteLineStylesSet
 import de.hdodenhof.circleimageview.CircleImageView
-import java.text.DecimalFormat
+import org.jetbrains.kotlin.konan.util.DependencySource
+import java.time.Duration
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class FriendAdapter(var friendList : ArrayList<FollowListResponse> ) :
     RecyclerView.Adapter<FriendAdapter.FriendViewHolder>(){
@@ -50,6 +42,18 @@ class FriendAdapter(var friendList : ArrayList<FollowListResponse> ) :
             }
         }
         holder.date.text = friendList[position].recentWalkTime
+        if(friendList[position].recentWalkTime != null){
+            val duration = Duration.between(LocalDateTime.parse(friendList[position].recentWalkTime, DateTimeFormatter.ISO_DATE_TIME),LocalDateTime.now()).toDays()
+            val ago = if(duration == 0L){
+                "오늘 어슬렁한 사람"
+            }else{
+                "${duration}일 전 어슬렁"
+            }
+            holder.date.text = ago
+        }
+        else{
+            holder.date.text = "아직 어슬렁하지 않은 사람"
+        }
     }
 
     interface OnFriendClickListener{

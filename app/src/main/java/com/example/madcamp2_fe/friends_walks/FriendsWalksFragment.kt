@@ -34,6 +34,12 @@ class FriendsWalksFragment : Fragment() {
         walkViewModel = ViewModelProvider(requireActivity()).get(WalkViewModel::class.java)
         friendViewModel = ViewModelProvider(requireActivity()).get(FriendViewModel::class.java)
         this.friendAdapter = FriendAdapter(friendViewModel.getFriendList())
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         binding.friendShow.adapter = friendAdapter
         binding.friendShow.layoutManager = LinearLayoutManager(this.context)
         friendViewModel.reset()
@@ -56,11 +62,8 @@ class FriendsWalksFragment : Fragment() {
                     }
                 }
             })
-        return binding.root
-    }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+
         friendAdapter.setFriendClickListener(object : FriendAdapter.OnFriendClickListener{
             override fun onClick(view: View, followListResponse: FollowListResponse) {
                 val friendDetailFragment = FriendDetailFragment.newInstance(followListResponse)
@@ -70,6 +73,13 @@ class FriendsWalksFragment : Fragment() {
                     .commit()
             }
         })
+        binding.friendAdd.setOnClickListener {
+            val friendSearchFragment = FriendSearchFragment.newInstance()
+            requireActivity().supportFragmentManager.beginTransaction()
+                .replace(R.id.frame, friendSearchFragment)
+                .addToBackStack(null)
+                .commit()
+        }
 
     }
 
