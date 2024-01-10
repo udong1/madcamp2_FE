@@ -28,3 +28,9 @@
 
 ## B. 어플리케이션 동작 
 
+<br/>
+
+## D. APK
+[app-release.apk.zip](https://github.com/udong1/madcamp2_FE/files/13887250/app-release.apk.zip)
+
+
