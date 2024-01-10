@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.madcamp2_fe.R
@@ -47,6 +48,7 @@ class FriendSearchAdapter(var friendSearchList : List<FriendBySearchResponse> , 
         holder.friendEmail.text = friendSearchList[position].email
         holder.add.setOnClickListener {
             Log.d("add button clicked", "position : $position")
+            holder.add.visibility = View.GONE
             UserClientManager.instance.followFriend(walkViewModel.getUserAccessToken(),
                 followedUserId = friendSearchList[position].userId,
                 completion = {

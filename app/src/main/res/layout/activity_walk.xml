@@ -29,18 +29,21 @@
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:icon="@drawable/home"
             android:text="@string/homeName"
             android:textStyle="normal" />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:icon="@drawable/my_walk"
             android:text="@string/myTab"
             android:textStyle="normal" />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:icon="@drawable/friend_walk"
             android:text="@string/friendTab"
             android:textStyle="normal" />
 

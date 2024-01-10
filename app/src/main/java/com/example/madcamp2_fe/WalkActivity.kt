@@ -2,6 +2,7 @@ package com.example.madcamp2_fe
 
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.PorterDuff
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -76,6 +77,7 @@ class WalkActivity : AppCompatActivity() {
 
         binding.tabBar.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener{
             override fun onTabSelected(tab: TabLayout.Tab){
+
                 when (tab.text){
                     "어슬렁 홈"->{
                         supportFragmentManager.beginTransaction().replace(R.id.frame, home)

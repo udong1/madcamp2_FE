@@ -45,7 +45,7 @@
             android:fontFamily="@font/sejong_font"
             android:text="TextView"
             android:textSize="20sp"
-            app:layout_constraintBottom_toTopOf="@id/friendWalkDate"
+            app:layout_constraintBottom_toTopOf="@id/friendEmail"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -53,23 +53,23 @@
             android:id="@+id/friendWalkDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="15dp"
             android:fontFamily="@font/sejong_hospital_light"
             android:text="TextView"
             android:textSize="14sp"
-            app:layout_constraintBottom_toTopOf="friendEmail"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/friendName" />
+            app:layout_constraintTop_toBottomOf="@id/friendEmail" />
 
         <TextView
             android:id="@+id/friendEmail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             android:fontFamily="@font/sejong_hospital_light"
             android:text="@string/email"
             android:textSize="14sp"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/friendWalkDate"/>
+            app:layout_constraintTop_toBottomOf="@id/friendName" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

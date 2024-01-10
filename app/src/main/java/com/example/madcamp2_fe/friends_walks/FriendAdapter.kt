@@ -20,6 +20,7 @@ class FriendAdapter(var friendList : ArrayList<FollowListResponse> ) :
         val friendProfile = view.findViewById<CircleImageView>(R.id.friendProfile)!!
         val friendName = view.findViewById<TextView>(R.id.friendName)!!
         val date = view.findViewById<TextView>(R.id.friendWalkDate)!!
+        val friendEmail = view.findViewById<TextView>(R.id.friendEmail)!!
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FriendViewHolder {
@@ -42,6 +43,7 @@ class FriendAdapter(var friendList : ArrayList<FollowListResponse> ) :
             }
         }
         holder.date.text = friendList[position].recentWalkTime
+        holder.friendEmail.text = friendList[position].email
         if(friendList[position].recentWalkTime != null){
             val duration = Duration.between(LocalDateTime.parse(friendList[position].recentWalkTime, DateTimeFormatter.ISO_DATE_TIME),LocalDateTime.now()).toDays()
             val ago = if(duration == 0L){
@@ -53,6 +55,9 @@ class FriendAdapter(var friendList : ArrayList<FollowListResponse> ) :
         }
         else{
             holder.date.text = "아직 어슬렁하지 않은 사람"
+        }
+        holder.itemView.setOnClickListener{
+            friendClickListener.onClick(it, friendList[position])
         }
     }
 

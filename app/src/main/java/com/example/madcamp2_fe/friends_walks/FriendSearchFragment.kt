@@ -60,7 +60,6 @@ class FriendSearchFragment : Fragment() {
 
         binding.searchButton.setOnClickListener {
             //디비에 정보 요청 후 결과에 따라 recyclerview에 연결
-
             UserClientManager.instance.searchFriends(walkViewModel.getUserAccessToken(),
                 search = searchTerm,
                 completion = {

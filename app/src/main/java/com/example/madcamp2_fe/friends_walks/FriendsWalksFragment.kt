@@ -66,6 +66,7 @@ class FriendsWalksFragment : Fragment() {
 
         friendAdapter.setFriendClickListener(object : FriendAdapter.OnFriendClickListener{
             override fun onClick(view: View, followListResponse: FollowListResponse) {
+                Log.d("friend clicked", "friend clicked")
                 val friendDetailFragment = FriendDetailFragment.newInstance(followListResponse)
                 requireActivity().supportFragmentManager.beginTransaction()
                     .replace(R.id.frame, friendDetailFragment)
@@ -73,6 +74,7 @@ class FriendsWalksFragment : Fragment() {
                     .commit()
             }
         })
+
         binding.friendAdd.setOnClickListener {
             val friendSearchFragment = FriendSearchFragment.newInstance()
             requireActivity().supportFragmentManager.beginTransaction()
