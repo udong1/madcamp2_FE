@@ -45,7 +45,15 @@
 
 <br/>
 
-## C. APK
+## C. 어플리케이션 영상
+
+https://github.com/udong1/madcamp2_FE/assets/81519167/491c0c4b-116c-4642-9b5b-df9ec96de0a7
+
+https://github.com/udong1/madcamp2_FE/assets/81519167/78ba2d41-0ac5-4f10-8466-041864f5522f
+
+
+
+## D. APK
 [app-release.apk.zip](https://github.com/udong1/madcamp2_FE/files/13887250/app-release.apk.zip)
 
 
